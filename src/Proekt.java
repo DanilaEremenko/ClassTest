@@ -12,92 +12,29 @@ import java.math.BigInteger;
  */
 
 public class Proekt {
-    String digit;
+    Integer Idigit;
+    String Sdigit;
+
 
     public Proekt(String strDigit) {
-        this.digit = strDigit;
+        this.Sdigit = strDigit;
+
     }
 
-    public Proekt(int digit) {
-        this(String.valueOf(digit));
-    }
-
-
-
-
-
-
-
-
-    public String subtraction(Proekt str, Proekt str2) {
-        StringBuilder strBuilder = new StringBuilder(str.digit);
-        StringBuilder strBuilder2 = new StringBuilder(str2.digit);
-        StringBuilder RezultSumbuilder = new StringBuilder("");
-
-
-        if (strBuilder2.length() > strBuilder.length()) {
-            strBuilder = new StringBuilder(str2.digit);
-            strBuilder2 = new StringBuilder(str.digit);
-        }
-
-        strBuilder.reverse();
-        strBuilder2.reverse();
-
-        //Подведение чисел под общий знаменатель
-        if (strBuilder.length() != strBuilder2.length()) {
-
-            while (strBuilder.length() > strBuilder2.length()) {
-                strBuilder2.append(0);
-            }
-
-            while (strBuilder2.length() > strBuilder.length()) {
-                strBuilder.append(0);
-            }
-
-        }
-
-        int[] massInt = new int[strBuilder.length()];
-        char[] massChar = new char[strBuilder.length()];
-        int[] massInt2 = new int[strBuilder.length()];
-        char[] massChar2 = new char[strBuilder.length()];
-        int ost = 0;
-
-        for (int i = 0; i < (strBuilder.length()); i++) {
-            massChar[i] = strBuilder.charAt(i);
-            massInt[i] = Character.getNumericValue(massChar[i]);
-            massChar2[i] = strBuilder2.charAt(i);
-            massInt2[i] = Character.getNumericValue(massChar2[i]);
-        }
-        for (int i = 0; i < (strBuilder.length()); i++) {
-            int sum = 0;
-            if (massInt[i]>massInt2[i]) {
-                sum = massInt[i] - massInt2[i];
-            } if(massInt[i]<massInt2[i]) {
-                massInt[i+1]=massInt[i+1]-1;
-                sum = massInt[i]+10 - massInt2[i];
-            }
-
-            String a = Integer.toString(sum);
-            RezultSumbuilder.append(a);
-
+    public Proekt(Integer intDigit) {
+        this.Idigit = intDigit;
 
     }
 
 
-        RezultSumbuilder.reverse();
-        String RezultSum = RezultSumbuilder.toString();
-        RezultSum = RezultSum.replaceFirst ("^0*", "");
-        return RezultSum;
-
-    }
-
+    //СЛОЖЕНИЕ
     public String suma(Proekt str, Proekt str2) {
         // Создание strBuilder и strBuilder2
-        StringBuilder strBuilder = new StringBuilder(str.digit);
-        StringBuilder strBuilder2 = new StringBuilder(str2.digit);
+        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+        StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
         if (strBuilder2.length() > strBuilder.length()) {
-            strBuilder = new StringBuilder(str2.digit);
-            strBuilder2 = new StringBuilder(str.digit);
+            strBuilder = new StringBuilder(str2.Sdigit);
+            strBuilder2 = new StringBuilder(str.Sdigit);
         }
 
         strBuilder.reverse();
@@ -151,30 +88,69 @@ public class Proekt {
         //Вывод ответа в сравнении с подсчетом через BigInteger
         RezultSumbuilder.reverse();
         String RezultSum = RezultSumbuilder.toString();
-        RezultSum = RezultSum.replaceFirst ("^0*", "");
+        RezultSum = RezultSum.replaceFirst("^0*", "");
         return RezultSum;
     }
 
+    //ВЫЧИТАНИЕ
+    public String divide(Proekt str, Proekt divisor) {
+        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+        StringBuilder RezultDiv = new StringBuilder("");
+        int divisor2 = divisor.Idigit;
+        int a = divisor2;
+        char massChar[] = new char[strBuilder.length()];
+        int massInt[] = new int[strBuilder.length()];
+        int div = 0;//частное
+        int ost = 0;//остаток при вычитании
+        int delimoe;
 
-    public String proizv(Proekt str, Proekt str2) { /*П
-        Р
-        О
-        И
-        З
-        В
-        Е
-        Д
-        Е
-        Н
-        И
-        Е
-         */
-        /*
-        System.out.println("Первый множитель"+str);
-        System.out.println("Второй множитель"+str2);
-        */
-        StringBuilder strBuilder = new StringBuilder(str.digit);
-        StringBuilder strBuilder2 = new StringBuilder(str2.digit);
+        for (int i = 0; i < strBuilder.length(); i++) {
+
+            massChar[i] = strBuilder.charAt(i);
+            massInt[i] = Character.getNumericValue(massChar[i]);
+        }
+        for (int i = 0; i < strBuilder.length() - 1; ) {
+
+            delimoe = ost * 10 + massInt[i];
+            while (delimoe < divisor2) {
+                delimoe = delimoe * 10 + massInt[i + 1];
+                i++;
+            }
+
+            div = delimoe / divisor2;
+            ost = delimoe % divisor2;
+            String s = Integer.toString(div);
+            RezultDiv.append(s);
+            i++;
+
+            while ((i < strBuilder.length()) && (massInt[i] == 0)) {
+                RezultDiv.append("0");
+                i++;
+            }
+        }
+
+
+//        if (ost == 0) {
+//
+//
+//            String a = Integer.toString(proizv);
+//            stringBuilderslog[i].append(a);
+//
+//
+//        }
+
+
+        String Rezultdivide;
+        Rezultdivide = RezultDiv.toString();
+        return Rezultdivide;
+    }
+
+    //УМНОЖЕНИЕ
+    public String proizv(Proekt str, Proekt str2) {
+
+
+        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+        StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
 
         if (strBuilder.length() > strBuilder2.length()) {
 
@@ -192,11 +168,7 @@ public class Proekt {
                 strBuilder.reverse();
             }
         }
-/*
-        System.out.println("Первый множитель после уравнивания"+strBuilder);
-        System.out.println("Второй множитель после уравнивания"+strBuilder2);
-*/
-        //Подведение чисел под общий знаменатель
+
 
         StringBuilder[] stringBuilderslog = new StringBuilder[strBuilder.length()];
         for (int i = 0; i < strBuilder.length(); i++) {
@@ -265,12 +237,6 @@ public class Proekt {
 //Получили составные части произведения
 
 
-/*
-        for(int i=strBuilder.length()-1;i>=0;i--){
-            System.out.println((strBuilder.length() - i) +"stringBuilderslog перед уравнением = "+stringBuilderslog[i]);
-        }
-*/
-
         //  Подведение чисел под общий знаменатель
         int max = 0;
         for (int i = 0; i < strBuilder.length(); i++) {
@@ -293,7 +259,6 @@ public class Proekt {
 
         for (int i = strBuilder.length() - 1; i >= 0; i--) {
             stringslog[i] = stringBuilderslog[i].toString();
-            /*System.out.println((strBuilder.length() - i) + " Слогаемое = " + stringslog[i]);*/
         }
 
         String RezultProizv = "0";
@@ -302,9 +267,73 @@ public class Proekt {
             zero2 = suma(RezultProizv, stringslog[i]);
             RezultProizv = zero2;
         }
-        RezultProizv = RezultProizv.replaceFirst ("^0*", "");
+        RezultProizv = RezultProizv.replaceFirst("^0*", "");
         return RezultProizv;
 
+
+    }
+
+    //ДЕЛЕНИЕ
+    public String subtraction(Proekt str, Proekt str2) {
+        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+        StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
+        StringBuilder RezultSumbuilder = new StringBuilder("");
+
+
+        if (strBuilder2.length() > strBuilder.length()) {
+            strBuilder = new StringBuilder(str2.Sdigit);
+            strBuilder2 = new StringBuilder(str.Sdigit);
+        }
+
+        strBuilder.reverse();
+        strBuilder2.reverse();
+
+        //Подведение чисел под общий знаменатель
+        if (strBuilder.length() != strBuilder2.length()) {
+
+            while (strBuilder.length() > strBuilder2.length()) {
+                strBuilder2.append(0);
+            }
+
+            while (strBuilder2.length() > strBuilder.length()) {
+                strBuilder.append(0);
+            }
+
+        }
+
+        int[] massInt = new int[strBuilder.length()];
+        char[] massChar = new char[strBuilder.length()];
+        int[] massInt2 = new int[strBuilder.length()];
+        char[] massChar2 = new char[strBuilder.length()];
+        int ost = 0;
+
+        for (int i = 0; i < (strBuilder.length()); i++) {
+            massChar[i] = strBuilder.charAt(i);
+            massInt[i] = Character.getNumericValue(massChar[i]);
+            massChar2[i] = strBuilder2.charAt(i);
+            massInt2[i] = Character.getNumericValue(massChar2[i]);
+        }
+        for (int i = 0; i < (strBuilder.length()); i++) {
+            int sum = 0;
+            if (massInt[i] > massInt2[i]) {
+                sum = massInt[i] - massInt2[i];
+            }
+            if (massInt[i] < massInt2[i]) {
+                massInt[i + 1] = massInt[i + 1] - 1;
+                sum = massInt[i] + 10 - massInt2[i];
+            }
+
+            String a = Integer.toString(sum);
+            RezultSumbuilder.append(a);
+
+
+        }
+
+
+        RezultSumbuilder.reverse();
+        String RezultSum = RezultSumbuilder.toString();
+        RezultSum = RezultSum.replaceFirst("^0*", "");
+        return RezultSum;
 
     }
 
@@ -312,13 +341,7 @@ public class Proekt {
 
 
 
-
-
-
-
-
-
-
+    //СЛОЖЕНИЕ
     public String suma(String str, String str2) {
         // Создание strBuilder и strBuilder2
         StringBuilder strBuilder = new StringBuilder(str);
@@ -387,10 +410,11 @@ public class Proekt {
         //Вывод ответа в сравнении с подсчетом через BigInteger
         RezultSumbuilder.reverse();
         String RezultSum = RezultSumbuilder.toString();
-        RezultSum = RezultSum.replaceFirst ("^0*", "");
+        RezultSum = RezultSum.replaceFirst("^0*", "");
         return RezultSum;
     }
 
+    //ВЫЧИТАНИЕ
     public String subtraction(String str, String str2) {
         StringBuilder strBuilder = new StringBuilder(str);
         StringBuilder strBuilder2 = new StringBuilder(str2);
@@ -432,11 +456,12 @@ public class Proekt {
         }
         for (int i = 0; i < (strBuilder.length()); i++) {
             int sum = 0;
-            if (massInt[i]>massInt2[i]) {
+            if (massInt[i] > massInt2[i]) {
                 sum = massInt[i] - massInt2[i];
-            } if(massInt[i]<massInt2[i]) {
-                massInt[i+1]=massInt[i+1]-1;
-                sum = massInt[i]+10 - massInt2[i];
+            }
+            if (massInt[i] < massInt2[i]) {
+                massInt[i + 1] = massInt[i + 1] - 1;
+                sum = massInt[i] + 10 - massInt2[i];
             }
 
             String a = Integer.toString(sum);
@@ -448,7 +473,7 @@ public class Proekt {
 
         RezultSumbuilder.reverse();
         String RezultSum = RezultSumbuilder.toString();
-        RezultSum = RezultSum.replaceFirst ("^0*", "");
+        RezultSum = RezultSum.replaceFirst("^0*", "");
         return RezultSum;
 
     }
