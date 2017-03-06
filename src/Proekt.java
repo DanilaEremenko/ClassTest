@@ -337,9 +337,51 @@ public class Proekt {
 
     }
 
+    //ВОЗВРАТ БОЛЬШЕГО
+    public String comparemore(Proekt str, Proekt digit) {
+        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+        String RezultComparemore = "";
+        if (digit.Idigit < 0) {
+            RezultComparemore = strBuilder.toString();
+        } else {
+            StringBuilder strBuilder2 = new StringBuilder(digit.Idigit.toString());
+            if (strBuilder.length() > strBuilder2.length()) {
+                RezultComparemore = strBuilder.toString();
+            }
+            if (strBuilder2.length() > strBuilder.length()) {
+                RezultComparemore = strBuilder2.toString();
+            }
+            if (strBuilder.length() == strBuilder2.length()) {
+                RezultComparemore = "надо доделать";
+            }
+        }
+        return RezultComparemore;
+    }
+
+    //ВОЗВРАТ МЕНЬШЕГО
+    public String compareless(Proekt str, Proekt digit) {
+        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+        String RezultComparemore = "";
+        StringBuilder strBuilder2 = new StringBuilder(digit.Idigit.toString());
+        if (digit.Idigit < 0) {
+            RezultComparemore = strBuilder2.toString();
+        } else {
+            if (strBuilder.length() > strBuilder2.length()) {
+                RezultComparemore = strBuilder2.toString();
+            }
+            if (strBuilder2.length() > strBuilder.length()) {
+                RezultComparemore = strBuilder.toString();
+            }
+            if (strBuilder.length() == strBuilder2.length()) {
+                RezultComparemore = "надо доделать";
+            }
+        }
+        return RezultComparemore;
+    }
 
 
 
+    //НЕ ДЛЯ ТЕСТОВ
 
     //СЛОЖЕНИЕ
     public String suma(String str, String str2) {
@@ -370,19 +412,14 @@ public class Proekt {
 
         /*Создание массивов massInt[] massChar[] massInt2[] и massChar2[]
         * чтобы переводить и поразрядно складывать цифры чисел*/
-        int max;
-        if (strBuilder.length() > strBuilder2.length()) {
-            max = strBuilder.length();
-        } else {
-            max = strBuilder2.length();
-        }
-        int[] massInt = new int[max];
-        char[] massChar = new char[max];
-        int[] massInt2 = new int[max];
-        char[] massChar2 = new char[max];
+
+        int[] massInt = new int[strBuilder.length()];
+        char[] massChar = new char[strBuilder.length()];
+        int[] massInt2 = new int[strBuilder.length()];
+        char[] massChar2 = new char[strBuilder.length()];
         int ost = 0;
 //Сложение массивов
-        for (int i = 0; i < (max); i++) {
+        for (int i = 0; i < (strBuilder.length()); i++) {
             massChar[i] = strBuilder.charAt(i);
             massInt[i] = Character.getNumericValue(massChar[i]);
             massChar2[i] = strBuilder2.charAt(i);
@@ -478,9 +515,43 @@ public class Proekt {
 
     }
 
+    //ДВА НИЖНИХ МОЖНО ПОПРОБОВАТЬ ДОВЕСТИ ДО УМА
+    public String comparemore(String str, String str2) {
+        StringBuilder strBuilder = new StringBuilder(str);
+        StringBuilder strBuilder2 = new StringBuilder(str2);
+        StringBuilder RezultComparemoreBuilder;
+        String RezultComparemore="";
+
+            if (strBuilder.length() > strBuilder2.length()) {
+                RezultComparemore = strBuilder.toString();
+            }
+            if (strBuilder2.length() > strBuilder.length()) {
+                RezultComparemore = strBuilder2.toString();
+            }
+            if (strBuilder.length() == strBuilder2.length()) {
+                RezultComparemore = "надо доделать";
+            }
+
+        return RezultComparemore;
+    }
+
+    public boolean compareequal(String str, String str2) {
+        // Создание strBuilder и strBuilder2
+        StringBuilder strBuilder = new StringBuilder(str);
+        StringBuilder strBuilder2 = new StringBuilder(str2);
+        if (strBuilder2.length() > strBuilder.length()) {
+            strBuilder = new StringBuilder(str2);
+            strBuilder2 = new StringBuilder(str);
+        }
+
+
+     boolean a=true;
+        return a;
+
+    }
+
 
 }
-
 
 
 
