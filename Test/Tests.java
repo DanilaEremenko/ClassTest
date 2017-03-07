@@ -6,39 +6,54 @@ import static org.junit.Assert.*;
  * Created by 801674 on 24.02.2017.
  */
 public class Tests {
-    Proekt proekt = new Proekt("");
+    EDLargeInteger edLI = new EDLargeInteger("");
 
 
     @Test
     public void suma() {
-        assertEquals("968089246", proekt.suma(new Proekt("884659354"), new Proekt("83429892")));
+        edLI=new EDLargeInteger("987");
+        assertEquals("985", edLI.suma(
+                new EDLargeInteger("-2")));
 
     }
 
     @Test
     public void proizv() {
-        assertEquals("64968696182621", proekt.proizv(new Proekt("95689"), new Proekt("678956789")));
+        edLI=new EDLargeInteger("95689");
+        assertEquals("-64968696182621", edLI.proizv(
+
+                new EDLargeInteger("-678956789")));
 
     }
 
     @Test
     public void subtraction() {
-        assertEquals("3326370759", proekt.subtraction(new Proekt("3405350345"), new Proekt("78979586")));
+        edLI=new EDLargeInteger("78979586");
+        assertEquals("78979590",
+                edLI.subtraction(
+                        new EDLargeInteger("-4")));
+
     }
 
     @Test
     public void divide() {
-        assertEquals("5000100", proekt.divide(new Proekt("1250002500"), new Proekt(25)));
+        edLI=new EDLargeInteger("9801");
+        assertEquals("-99", edLI.divide(
+                new EDLargeInteger(-99)));
     }
 
     @Test
-    public void comparemore() {
-        assertEquals("5", proekt.comparemore(new Proekt("5"), new Proekt(-500)));
+    public void max() {
+        assertEquals("603290432", edLI.max(
+                new EDLargeInteger("603290432"),
+                new EDLargeInteger("-703290432")));
 
     }
 
     @Test
-    public void compareless(){
-        assertEquals("-50",proekt.compareless(new Proekt("5"),new Proekt(-50)));
+    public void min(){
+        assertEquals("-7",edLI.min(
+                new EDLargeInteger("6"),
+                new EDLargeInteger("-7")));
     }
     }
