@@ -35,7 +35,7 @@ public class EDInt {
 //    public EDInt summa(EDInt str2)
 //    {
 //    }
-
+//
     private EDInt delzero(EDInt edi) {
         StringBuilder str = new StringBuilder(edi.Sdigit);
         while (str.charAt(0) == '0') {
