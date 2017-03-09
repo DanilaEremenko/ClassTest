@@ -18,7 +18,7 @@ public class EDLargeInteger {
         StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
         boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
         if ((c != true) || (b != true)) {
-            return "incompatible types";
+            throw new IllegalArgumentException();
         } else {
             /*Если второе число отрицательно,
             то убираем знак "-" у второго числа и
@@ -471,20 +471,20 @@ public class EDLargeInteger {
                 if (strBuilder.length() == strBuilder2.length()) {
 
 
-                    for (int i = strBuilder.length() - 1; i >= 0; ) {
+                    for (int i = 0; i<strBuilder.length(); ) {
                         char massChar = strBuilder.charAt(i);
                         int massInt = Character.getNumericValue(massChar);
                         char massChar2 = strBuilder2.charAt(i);
                         int massInt2 = Character.getNumericValue(massChar2);
                         if (massInt == massInt2) {
-                            i--;
+                            i++;
                         } else {
                             if (massInt > massInt2) {
                                 RezultComparemore = strBuilder.toString();
-                                i = -1;
+                                i = strBuilder.length();
                             } else if (massInt2 > massInt) {
                                 RezultComparemore = strBuilder2.toString();
-                                i = -1;
+                                i = strBuilder.length();
                             }
                         }
 
@@ -517,20 +517,20 @@ public class EDLargeInteger {
                     RezultComparemore = strBuilder.toString();
                 }
                 if (strBuilder.length() == strBuilder2.length()) {
-                    for (int i = strBuilder.length() - 1; i >= 0; i--) {
+                    for (int i=0;i<strBuilder.length();) {
                         char massChar = strBuilder.charAt(i);
                         int massInt = Character.getNumericValue(massChar);
                         char massChar2 = strBuilder2.charAt(i);
                         int massInt2 = Character.getNumericValue(massChar2);
                         if (massInt == massInt2) {
-                            i--;
+                            i++;
                         } else {
                             if (massInt < massInt2) {
                                 RezultComparemore = strBuilder.toString();
-                                i = -1;
+                                i = -strBuilder.length();
                             } else if (massInt2 < massInt) {
                                 RezultComparemore = strBuilder2.toString();
-                                i = -1;
+                                i = strBuilder.length();
                             }
                         }
 
@@ -775,6 +775,11 @@ public class EDLargeInteger {
     return str.toString();
 }
 
-
+    public static void main(String[] args) {
+        EDLargeInteger a=new EDLargeInteger("5");
+        EDLargeInteger b=new EDLargeInteger("5");
+       String c=a.proizv(b);
+        System.out.println(c);
+    }
 }
 

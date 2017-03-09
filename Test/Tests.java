@@ -12,7 +12,7 @@ public class Tests {
         edLI = new EDLargeInteger("987");
         assertEquals("985", edLI.summa(
                 new EDLargeInteger("-2")));
-        assertEquals("incompatible types", edLI.summa(new EDLargeInteger("dsal;slad;")));
+
 
     }
 
@@ -70,4 +70,5 @@ public class Tests {
         assertEquals(false, edLI.equal(new EDLargeInteger("23-9b48234"), new EDLargeInteger("23-9b48234")));
         assertEquals(true, edLI.equal(new EDLargeInteger("-08432098"), new EDLargeInteger("-08432098")));
     }
+
 }
