@@ -2,9 +2,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by 801674 on 24.02.2017.
- */
+
 public class Tests {
     EDLargeInteger edLI = new EDLargeInteger("");
 
@@ -46,7 +44,7 @@ public class Tests {
     @Test
     public void mod() {
         edLI = new EDLargeInteger("126");
-        assertEquals("-1", edLI.mod(new EDLargeInteger(-25)));
+        assertEquals("-1", edLI.mod(new EDLargeInteger("-25")));
     }
 
     @Test

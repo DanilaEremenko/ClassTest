@@ -1,6 +1,5 @@
 
 public class EDLargeInteger {
-    Integer Idigit;
     String Sdigit;
 
 
@@ -9,10 +8,7 @@ public class EDLargeInteger {
 
     }
 
-    public EDLargeInteger(Integer intDigit) {
-        this.Idigit = intDigit;
 
-    }
 
 
     //СЛОЖЕНИЕ
@@ -82,16 +78,14 @@ public class EDLargeInteger {
                     String a = Integer.toString(sum);
                     RezultSumbuilder.append(a);
 
-            /*System.out.println("Сумма в разряде равна" + sum);*/
                 }
                 if (ost != 0) {
                     String a = Integer.toString(ost);
                     RezultSumbuilder.append(a);
                 }
-                //Вывод ответа в сравнении с подсчетом через BigInteger
+
                 RezultSumbuilder.reverse();
-                RezultSum = RezultSumbuilder.toString();
-                RezultSum = RezultSum.replaceFirst("^0*", "");
+                RezultSum = delzero(RezultSumbuilder);
             }
 
             return RezultSum;
@@ -168,8 +162,7 @@ public class EDLargeInteger {
 
 
                 RezultSumbuilder.reverse();
-                RezultSum = RezultSumbuilder.toString();
-                RezultSum = RezultSum.replaceFirst("^0*", "");
+                RezultSum = delzero(RezultSumbuilder);
             }
 
             return RezultSum;
@@ -238,17 +231,10 @@ public class EDLargeInteger {
             }
 
 
-//        if (ost == 0) {
-//
-//
-//            String a = Integer.toString(proizv);
-//            stringBuilderslog[i].append(a);
-//
-//
-//        }
+
 
             RezultDiv.reverse().append(znak).reverse();
-            String Rezultdivide = RezultDiv.toString();
+            String Rezultdivide = delzero(RezultDiv);
             return Rezultdivide;
         }
     }
@@ -256,18 +242,30 @@ public class EDLargeInteger {
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public String mod(EDLargeInteger divisor) {
         StringBuilder strBuilder = new StringBuilder(Sdigit);
+        StringBuilder strBuilder2=new StringBuilder(divisor.Sdigit);
         StringBuilder RezultDiv = new StringBuilder("");
         boolean c = check(strBuilder.toString());
         if (c != true) {
             return "incompatible types";
         } else {
-            int divisor2 = divisor.Idigit;
-            String znak;
-            if (divisor2 < 0) {
-                znak = "-";
-                divisor2 = divisor2 * (-1);
-            } else {
-                znak = "";
+            String znak="";
+            int divisor2 = 1;
+            if (strBuilder2.charAt(0) == '-')
+            {
+                znak="-";
+                strBuilder2.deleteCharAt(0);
+            }
+            for(int i=0;i<strBuilder2.length();i++)
+            {
+                char massChar=strBuilder2.charAt(i);
+                int a =Character.getNumericValue(massChar);
+
+                if(i>0) {
+                    divisor2 = divisor2 * 10 + a;
+                }
+                else{
+                    divisor2=a;
+                }
             }
             char massChar[] = new char[strBuilder.length()];
             int massInt[] = new int[strBuilder.length()];
@@ -303,17 +301,7 @@ public class EDLargeInteger {
             }
 
 
-//        if (ost == 0) {
-//
-//
-//            String a = Integer.toString(proizv);
-//            stringBuilderslog[i].append(a);
-//
-//
-//        }
-
-            String Rezultdivide = "";
-            Rezultdivide = Rezultdivide + znak + ost;
+            String Rezultdivide =""+znak+ost;
             return Rezultdivide;
         }
     }
@@ -777,6 +765,15 @@ public class EDLargeInteger {
         return proverka;
 
     }
+
+    //УДАЛЕНИЕ НЕЗНАЧАЩИХ НУЛЕЙ
+    public String delzero(StringBuilder str){
+        while(str.charAt(0)=='0')
+        {
+            str.deleteCharAt(0);
+        }
+    return str.toString();
+}
 
 
 }
