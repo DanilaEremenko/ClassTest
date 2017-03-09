@@ -598,7 +598,7 @@ public class EDLargeInteger {
     //НЕ ДЛЯ ТЕСТОВ
 
     //СЛОЖЕНИЕ
-    public String summa(String str, String str2) {
+    private String summa(String str, String str2) {
         // Создание strBuilder и strBuilder2
         StringBuilder strBuilder = new StringBuilder(str);
         StringBuilder strBuilder2 = new StringBuilder(str2);
@@ -666,7 +666,7 @@ public class EDLargeInteger {
     }
 
     //ВЫЧИТАНИЕ
-    public String subtraction(String str, String str2) {
+    private String subtraction(String str, String str2) {
         StringBuilder strBuilder = new StringBuilder(str);
         StringBuilder strBuilder2 = new StringBuilder(str2);
         StringBuilder RezultSumbuilder = new StringBuilder("");
@@ -730,7 +730,7 @@ public class EDLargeInteger {
     }
 
     //ПРОВЕРКА НА КОРРЕКТНОСТЬ ВВОДА
-    public boolean check(String str) {
+    private boolean check(String str) {
         StringBuilder strBuilder = new StringBuilder(str);
         int sovpadenie = 0;
         boolean proverka = false;
@@ -767,7 +767,7 @@ public class EDLargeInteger {
     }
 
     //УДАЛЕНИЕ НЕЗНАЧАЩИХ НУЛЕЙ
-    public String delzero(StringBuilder str){
+    private String delzero(StringBuilder str){
         while(str.charAt(0)=='0')
         {
             str.deleteCharAt(0);
