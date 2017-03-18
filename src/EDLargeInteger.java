@@ -778,7 +778,7 @@ public class EDLargeInteger {
     public static void main(String[] args) {
         EDLargeInteger a=new EDLargeInteger("5");
         EDLargeInteger b=new EDLargeInteger("5");
-       String c=a.proizv(b);
+       String c=a.summa(b);
         System.out.println(c);
     }
 }
