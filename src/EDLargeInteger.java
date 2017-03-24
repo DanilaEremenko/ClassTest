@@ -1,309 +1,218 @@
+import java.math.BigInteger;
+import java.util.*;
 
 public class EDLargeInteger {
-    String Sdigit;
 
+
+    private String Sdigit;
 
     public EDLargeInteger(String strDigit) {
-        this.Sdigit = strDigit;
+
+
+        int sovpadenie = 0;
+        StringBuilder digits = new StringBuilder("0123456789");
+        char massChar[] = new char[10];
+        for (int j = 0; j < 10; j++) {
+            massChar[j] = digits.charAt(j);
+        }
+        for (int i = 0; i < strDigit.length(); i++) {
+            for (int j = 0; j < 10; j++) {
+                if (strDigit.charAt(i) == massChar[j]) {
+                    sovpadenie += 1;
+                    break;
+
+                }
+            }
+        }
+        if (sovpadenie != strDigit.length()) {
+            {
+                throw new IllegalArgumentException();
+            }
+        } else if (sovpadenie == strDigit.length())
+            this.Sdigit = strDigit;
+
 
     }
-
-
 
 
     //СЛОЖЕНИЕ
     public String summa(EDLargeInteger str2) {
-        String RezultSum;
+        StringBuilder RezultSum = new StringBuilder();
         StringBuilder strBuilder = new StringBuilder(Sdigit);
         StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
-        boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
-        if ((c != true) || (b != true)) {
+
+
+        //Подведение чисел под общий знаменатель
+        if (strBuilder.length() != strBuilder2.length()) {
+
+            while (strBuilder.length() > strBuilder2.length()) {
+                strBuilder2.reverse().append(0).reverse();
+            }
+
+            while (strBuilder2.length() > strBuilder.length()) {
+                strBuilder.reverse().append(0).reverse();
+            }
+
+        }
+
+
+        int massInt, massInt2;
+        int ost = 0;
+//Сложение массивов
+        for (int i = strBuilder.length() - 1; i >= 0; i--) {
+            massInt = Character.getNumericValue(strBuilder.charAt(i));
+            massInt2 = Character.getNumericValue(strBuilder2.charAt(i));
+            int sum = 0;
+            if (ost == 0) {
+                sum = massInt + massInt2;
+                ost = sum / 10;
+                sum = sum % 10;
+            } else {
+                sum = massInt + massInt2 + ost;
+                ost = sum / 10;
+                sum = sum % 10;
+            }
+
+            String a = Integer.toString(sum);
+            RezultSum.append(a);
+
+        }
+        if (ost != 0) {
+            RezultSum.append(Integer.toString(ost));
+        }
+
+        RezultSum.reverse();
+
+        return delzero(RezultSum.toString());
+
+    }
+
+
+    //ВЫЧИТАНИЕ(избавиться от промежуточной строки)
+    public String subtraction(EDLargeInteger str2) {
+        StringBuilder RezultSub = new StringBuilder();
+        StringBuilder strBuilder = new StringBuilder(Sdigit);
+        StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
+
+
+        //Подведение чисел под общий знаменатель
+        if (strBuilder.length() != strBuilder2.length()) {
+
+            while (strBuilder.length() > strBuilder2.length()) {
+                strBuilder2.reverse().append(0).reverse();
+            }
+
+            while (strBuilder2.length() > strBuilder.length()) {
+                strBuilder.reverse().append(0).reverse();
+            }
+
+        }
+
+        int massInt[] = new int[strBuilder.length()];
+        int massInt2[] = new int[strBuilder.length()];
+        int ost = 0;
+
+        for (int i = strBuilder.length() - 1; i >= 0; i--) {
+            massInt[i] = Character.getNumericValue(strBuilder.charAt(i));
+            massInt2[i] = Character.getNumericValue(strBuilder2.charAt(i));
+        }
+        if (massInt[0] < massInt2[0]) {
             throw new IllegalArgumentException();
         } else {
-            /*Если второе число отрицательно,
-            то убираем знак "-" у второго числа и
-            вызываем метод вычитания для строк
-            */
-            if (strBuilder2.charAt(0) == '-') {
-                strBuilder2.deleteCharAt(0);
-                RezultSum = subtraction(strBuilder.toString(), strBuilder2.toString());
-            }
-            //Иначе складываем числа
-            else {
 
-                if (strBuilder2.length() > strBuilder.length()) {
-                    strBuilder = new StringBuilder(str2.Sdigit);
-                    strBuilder2 = new StringBuilder(Sdigit);
+            for (int i = strBuilder.length() - 1; i >= 0; i--) {
+                int sum = 0;
+                if (massInt[i] < massInt2[i]) {
+                    massInt[i - 1] = massInt[i - 1] - 1;
+                    sum = massInt[i] + 10 - massInt2[i];
+                } else {
+                    sum = massInt[i] - massInt2[i];
                 }
-
-                strBuilder.reverse();
-                strBuilder2.reverse();
-                StringBuilder RezultSumbuilder = new StringBuilder("");
-                //Подведение чисел под общий знаменатель
-                if (strBuilder.length() != strBuilder2.length()) {
-
-                    while (strBuilder.length() > strBuilder2.length()) {
-                        strBuilder2.append(0);
-                    }
-
-                    while (strBuilder2.length() > strBuilder.length()) {
-                        strBuilder.append(0);
-                    }
-
-                }
+                RezultSub.reverse().append(Integer.toString((sum))).reverse();
 
 
-                int[] massInt = new int[strBuilder.length()];
-                char[] massChar = new char[strBuilder.length()];
-                int[] massInt2 = new int[strBuilder.length()];
-                char[] massChar2 = new char[strBuilder.length()];
-                int ost = 0;
-//Сложение массивов
-                for (int i = 0; i < (strBuilder.length()); i++) {
-                    massChar[i] = strBuilder.charAt(i);
-                    massInt[i] = Character.getNumericValue(massChar[i]);
-                    massChar2[i] = strBuilder2.charAt(i);
-                    massInt2[i] = Character.getNumericValue(massChar2[i]);
-                    int sum = 0;
-                    if (ost == 0) {
-                        sum = massInt[i] + massInt2[i];
-                        ost = sum / 10;
-                        sum = sum % 10;
-                    } else {
-                        sum = massInt[i] + massInt2[i] + ost;
-                        ost = sum / 10;
-                        sum = sum % 10;
-                    }
-
-                    String a = Integer.toString(sum);
-                    RezultSumbuilder.append(a);
-
-                }
-                if (ost != 0) {
-                    String a = Integer.toString(ost);
-                    RezultSumbuilder.append(a);
-                }
-
-                RezultSumbuilder.reverse();
-                RezultSum = delzero(RezultSumbuilder);
             }
 
-            return RezultSum;
-
-
+            return delzero(RezultSub.toString());
         }
     }
 
-    //ВЫЧИТАНИЕ
-    public String subtraction(EDLargeInteger str2) {
-        StringBuilder strBuilder = new StringBuilder(Sdigit);
-        StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
-        boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
-        if ((c != true) || (b != true)) {
-            return "incompatible types";
-        } else {
-            String RezultSum;
-            StringBuilder RezultSumbuilder = new StringBuilder("");
-
-            if (strBuilder2.charAt(0) == '-') {
-                strBuilder2.deleteCharAt(0);
-                RezultSum = summa(strBuilder.toString(), strBuilder2.toString());
-            } else {
-
-
-                if (strBuilder2.length() > strBuilder.length()) {
-                    strBuilder = new StringBuilder(str2.Sdigit);
-                    strBuilder2 = new StringBuilder(Sdigit);
-                }
-
-                strBuilder.reverse();
-                strBuilder2.reverse();
-
-                //Подведение чисел под общий знаменатель
-                if (strBuilder.length() != strBuilder2.length()) {
-
-                    while (strBuilder.length() > strBuilder2.length()) {
-                        strBuilder2.append(0);
-                    }
-
-                    while (strBuilder2.length() > strBuilder.length()) {
-                        strBuilder.append(0);
-                    }
-
-                }
-
-                int[] massInt = new int[strBuilder.length()];
-                char[] massChar = new char[strBuilder.length()];
-                int[] massInt2 = new int[strBuilder.length()];
-                char[] massChar2 = new char[strBuilder.length()];
-                int ost = 0;
-
-                for (int i = 0; i < (strBuilder.length()); i++) {
-                    massChar[i] = strBuilder.charAt(i);
-                    massInt[i] = Character.getNumericValue(massChar[i]);
-                    massChar2[i] = strBuilder2.charAt(i);
-                    massInt2[i] = Character.getNumericValue(massChar2[i]);
-                }
-                for (int i = 0; i < (strBuilder.length()); i++) {
-                    int sum = 0;
-                    if (massInt[i] > massInt2[i]) {
-                        sum = massInt[i] - massInt2[i];
-                    }
-                    if (massInt[i] < massInt2[i]) {
-                        massInt[i + 1] = massInt[i + 1] - 1;
-                        sum = massInt[i] + 10 - massInt2[i];
-                    }
-
-                    String a = Integer.toString(sum);
-                    RezultSumbuilder.append(a);
-
-
-                }
-
-
-                RezultSumbuilder.reverse();
-                RezultSum = delzero(RezultSumbuilder);
-            }
-
-            return RezultSum;
-        }
-    }
 
     //ДЕЛЕНИЕ
     public String divide(EDLargeInteger divisor) {
-        StringBuilder strBuilder = new StringBuilder(Sdigit);
-        StringBuilder strBuilder2=new StringBuilder(divisor.Sdigit);
-        StringBuilder RezultDiv = new StringBuilder("");
-        boolean c = check(strBuilder.toString());
-        if (c != true) {
-            return "incompatible types";
-        } else {
-            String znak="";
-            int divisor2 = 1;
-            if (strBuilder2.charAt(0) == '-')
-            {
-                znak="-";
-            strBuilder2.deleteCharAt(0);
-            }
-            for(int i=0;i<strBuilder2.length();i++)
-            {
-                char massChar=strBuilder2.charAt(i);
-             int a =Character.getNumericValue(massChar);
-
-             if(i>0) {
-                 divisor2 = divisor2 * 10 + a;
-             }
-             else{
-                 divisor2=a;
-             }
-            }
-            char massChar[] = new char[strBuilder.length()];
-            int massInt[] = new int[strBuilder.length()];
-            int div = 0;//частное
-            int ost = 0;//остаток при вычитании
-            int delimoe;
-
-
-            for (int i = 0; i < strBuilder.length(); i++) {
-
-                massChar[i] = strBuilder.charAt(i);
-                massInt[i] = Character.getNumericValue(massChar[i]);
-            }
-            for (int i = 0; i < strBuilder.length(); ) {
-
-                delimoe = ost * 10 + massInt[i];
-                while (delimoe < divisor2) {
-                    delimoe = delimoe * 10 + massInt[i + 1];
-                    i++;
-                }
-
-                div = delimoe / divisor2;
-                ost = delimoe % divisor2;
-                String s = Integer.toString(div);
-                RezultDiv.append(s);
-                i++;
-
-                while ((i < strBuilder.length()) && (massInt[i] == 0)) {
-                    RezultDiv.append("0");
-                    i++;
-                }
-
-            }
-
-
-
-
-            RezultDiv.reverse().append(znak).reverse();
-            String Rezultdivide = delzero(RezultDiv);
-            return Rezultdivide;
+        StringBuilder delimoe = new StringBuilder(Sdigit);
+        StringBuilder delitel = new StringBuilder(divisor.Sdigit);
+        StringBuilder RezultDiv = new StringBuilder();
+        int massInt []=new int[delimoe.length()-1];
+        int massInt2[]=new int[delitel.length()-1];
+        for (int i=0;i<delimoe.length();i++)
+        {
+            massInt [i]=Character.getNumericValue(delimoe.charAt(i));
+            massInt2[i]=Character.getNumericValue(delitel.charAt(i));
         }
+
+
+
+        String Rezultdivide = delzero(RezultDiv.toString());
+        return Rezultdivide;
+
     }
+
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public String mod(EDLargeInteger divisor) {
         StringBuilder strBuilder = new StringBuilder(Sdigit);
-        StringBuilder strBuilder2=new StringBuilder(divisor.Sdigit);
-        StringBuilder RezultDiv = new StringBuilder("");
-        boolean c = check(strBuilder.toString());
-        if (c != true) {
-            return "incompatible types";
-        } else {
-            String znak="";
-            int divisor2 = 1;
-            if (strBuilder2.charAt(0) == '-')
-            {
-                znak="-";
-                strBuilder2.deleteCharAt(0);
+        StringBuilder strBuilder2 = new StringBuilder(divisor.Sdigit);
+        StringBuilder RezultDiv = new StringBuilder();
+        int divisor2 = 1;
+
+        for (int i = 0; i < strBuilder2.length(); i++) {
+            char massChar = strBuilder2.charAt(i);
+            int a = Character.getNumericValue(massChar);
+
+            if (i > 0) {
+                divisor2 = divisor2 * 10 + a;
+            } else {
+                divisor2 = a;
             }
-            for(int i=0;i<strBuilder2.length();i++)
-            {
-                char massChar=strBuilder2.charAt(i);
-                int a =Character.getNumericValue(massChar);
-
-                if(i>0) {
-                    divisor2 = divisor2 * 10 + a;
-                }
-                else{
-                    divisor2=a;
-                }
-            }
-            char massChar[] = new char[strBuilder.length()];
-            int massInt[] = new int[strBuilder.length()];
-            int div = 0;//частное
-            int ost = 0;//остаток при вычитании
-            int delimoe;
-
-
-            for (int i = 0; i < strBuilder.length(); i++) {
-
-                massChar[i] = strBuilder.charAt(i);
-                massInt[i] = Character.getNumericValue(massChar[i]);
-            }
-            for (int i = 0; i < strBuilder.length(); ) {
-
-                delimoe = ost * 10 + massInt[i];
-                while (delimoe < divisor2) {
-                    delimoe = delimoe * 10 + massInt[i + 1];
-                    i++;
-                }
-
-                div = delimoe / divisor2;
-                ost = delimoe % divisor2;
-                String s = Integer.toString(div);
-                RezultDiv.append(s);
-                i++;
-
-                while ((i < strBuilder.length()) && (massInt[i] == 0)) {
-                    RezultDiv.append("0");
-                    i++;
-                }
-
-            }
-
-
-            String Rezultdivide =""+znak+ost;
-            return Rezultdivide;
         }
+        char massChar[] = new char[strBuilder.length()];
+        int massInt[] = new int[strBuilder.length()];
+        int div = 0;//частное
+        int ost = 0;//остаток при вычитании
+        int delimoe;
+
+
+        for (int i = 0; i < strBuilder.length(); i++) {
+
+            massChar[i] = strBuilder.charAt(i);
+            massInt[i] = Character.getNumericValue(massChar[i]);
+        }
+        for (int i = 0; i < strBuilder.length(); ) {
+
+            delimoe = ost * 10 + massInt[i];
+            while (delimoe < divisor2) {
+                delimoe = delimoe * 10 + massInt[i + 1];
+                i++;
+            }
+
+            div = delimoe / divisor2;
+            ost = delimoe % divisor2;
+            String s = Integer.toString(div);
+            RezultDiv.append(s);
+            i++;
+
+            while ((i < strBuilder.length()) && (massInt[i] == 0)) {
+                RezultDiv.append("0");
+                i++;
+            }
+
+        }
+
+
+        String Rezultdivide = "" + ost;
+        return Rezultdivide;
+
     }
 
 
@@ -313,289 +222,222 @@ public class EDLargeInteger {
 
         StringBuilder strBuilder = new StringBuilder(Sdigit);
         StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
-        boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
-        if ((c != true) || (b != true)) {
-            return "incompatible types";
-        } else {
-            String znak;
-            if ((strBuilder.charAt(0) == strBuilder2.charAt(0))) {
-                znak = "";
-            } else {
-                znak = "-";
-                strBuilder2.deleteCharAt(0);
-            }
-            if (strBuilder.length() > strBuilder2.length()) {
 
-                while (strBuilder.length() > strBuilder2.length()) {
-                    strBuilder2.reverse();
-                    strBuilder2.append(0);
-                    strBuilder2.reverse();
-                }
-            }
-            if (strBuilder2.length() > strBuilder.length()) {
+        if (strBuilder.length() != strBuilder2.length()) {
 
-                while (strBuilder2.length() > strBuilder.length()) {
-                    strBuilder.reverse();
-                    strBuilder.append(0);
-                    strBuilder.reverse();
-                }
+            while (strBuilder.length() > strBuilder2.length()) {
+                strBuilder2.reverse().append(0).reverse();
             }
 
-
-            StringBuilder[] stringBuilderslog = new StringBuilder[strBuilder.length()];
-            for (int i = 0; i < strBuilder.length(); i++) {
-                stringBuilderslog[i] = new StringBuilder("");
+            while (strBuilder2.length() > strBuilder.length()) {
+                strBuilder.reverse().append(0).reverse();
             }
+
+        }
+
+
+        StringBuilder[] stringBuilderslog = new StringBuilder[strBuilder.length()];
+        for (int i = strBuilder.length() - 1; i >= 0; i--) {
+            stringBuilderslog[i] = new StringBuilder();
+        }
 
 
 //Получаем составные части произведения которые потом нужно сложить
-            char massChar[] = new char[strBuilder.length()];
-            char massChar2[] = new char[strBuilder.length()];
-            int massInt[] = new int[strBuilder.length()];
-            int massInt2[] = new int[strBuilder.length()];
-            int proizv = 0;
-            int ost = 0;
+        int massInt[] = new int[strBuilder.length()];
+        int massInt2[] = new int[strBuilder.length()];
+
+        for (int i = strBuilder.length() - 1; i >= 0; i--) {
+            massInt[i] = Character.getNumericValue(strBuilder.charAt(i));
+            massInt2[i] = Character.getNumericValue(strBuilder2.charAt(i));
+        }
+
+        int proizv = 0;
+        int ost = 0;
 
 
-            for (int i = strBuilder.length() - 1; i >= 0; i--) {
-
-                for (int j = strBuilder.length() - 1; j >= 0; j--) {
-                    massChar[j] = strBuilder.charAt(j);
-                    massInt[j] = Character.getNumericValue(massChar[j]);
-                    massChar2[i] = strBuilder2.charAt(i);
-                    massInt2[i] = Character.getNumericValue(massChar2[i]);
-
-                    if (ost == 0) {
-
-                        proizv = massInt[j] * massInt2[i];
-                        ost = proizv / 10;
-                        proizv = proizv % 10;
-
-                    } else {
-
-                        proizv = massInt[j] * massInt2[i] + ost;
-                        ost = proizv / 10;
-                        proizv = proizv % 10;
-
-                    }
-
-                    String a = Integer.toString(proizv);
-                    stringBuilderslog[i].append(a);
+        for (int i = strBuilder.length() - 1; i >= 0; i--) {
+            for (int j = strBuilder.length() - 1; j >= 0; j--) {
 
 
-                }
-
-
-                int k = i;
                 if (ost == 0) {
-                    stringBuilderslog[i].reverse();
-                    while (k < (strBuilder.length() - 1)) {
-                        k++;
-                        stringBuilderslog[i].append("0");
-                    }
+
+                    proizv = massInt[j] * massInt2[i];
+                    ost = proizv / 10;
+                    proizv = proizv % 10;
+
                 } else {
-                    stringBuilderslog[i].append(ost);
-                    stringBuilderslog[i].reverse();
-                    while (k < (strBuilder.length() - 1)) {
-                        k++;
-                        stringBuilderslog[i].append("0");
-                    }
+
+                    proizv = massInt[j] * massInt2[i] + ost;
+                    ost = proizv / 10;
+                    proizv = proizv % 10;
 
                 }
-                ost = 0;
+
+                stringBuilderslog[i].append(Integer.toString(proizv));
 
 
             }
+
+
+            int k = i;
+            if (ost == 0) {
+                stringBuilderslog[i].reverse();
+                while (k < (strBuilder.length() - 1)) {
+                    k++;
+                    stringBuilderslog[i].append("0");
+                }
+            } else {
+                stringBuilderslog[i].append(ost).reverse();
+                while (k < (strBuilder.length() - 1)) {
+                    k++;
+                    stringBuilderslog[i].append("0");
+                }
+
+            }
+            ost = 0;
+
+
+        }
 //Получили составные части произведения
 
 
-            //  Подведение чисел под общий знаменатель
-            int max = 0;
-            for (int i = 0; i < strBuilder.length(); i++) {
-                if (max < stringBuilderslog[i].length())
-                    max = stringBuilderslog[i].length();
-            }
+        //  Подведение чисел под общий знаменатель
+        int max = 0;
+        for (int i = 0; i < strBuilder.length(); i++) {
+            if (max < stringBuilderslog[i].length())
+                max = stringBuilderslog[i].length();
+        }
 
-            for (int i = 0; i < strBuilder.length(); i++) {
-                if (stringBuilderslog[i].length() < max) {
-                    while (stringBuilderslog[i].length() < max) {
-                        stringBuilderslog[i].reverse();
-                        stringBuilderslog[i].append(0);
-                        stringBuilderslog[i].reverse();
-                    }
+        for (int i = 0; i < strBuilder.length(); i++) {
+            if (stringBuilderslog[i].length() < max) {
+                while (stringBuilderslog[i].length() < max) {
+                    stringBuilderslog[i].reverse().append(0).reverse();
                 }
-
             }
-            String stringslog[] = new String[strBuilder.length()];
-
-
-            for (int i = strBuilder.length() - 1; i >= 0; i--) {
-                stringslog[i] = stringBuilderslog[i].toString();
-            }
-
-            String RezultProizv = "0";
-            String zero2;
-            for (int i = 0; i < strBuilder.length(); i++) {
-                zero2 = summa(RezultProizv, stringslog[i]);
-                RezultProizv = zero2;
-            }
-            RezultProizv = RezultProizv.replaceFirst("^0*", "");
-            StringBuilder RezultBuilder = new StringBuilder(RezultProizv);
-            RezultBuilder.reverse().append(znak).reverse();
-            RezultProizv = RezultBuilder.toString();
-            return RezultProizv;
 
         }
-    }
+        String stringslog[] = new String[strBuilder.length()];
 
+
+        for (int i = strBuilder.length() - 1; i >= 0; i--) {
+            stringslog[i] = stringBuilderslog[i].toString();
+        }
+
+        String RezultProizv = "0";
+        for (int i = 0; i < strBuilder.length(); i++) {
+            RezultProizv = summa(RezultProizv, stringslog[i]);
+        }
+
+        return delzero(RezultProizv);
+
+    }
 
 
     //ВОЗВРАТ БОЛЬШЕГО
-    public String max(EDLargeInteger str, EDLargeInteger str2) {
-        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+    public String max(EDLargeInteger str2) {
+        StringBuilder strBuilder = new StringBuilder(Sdigit);
         StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
-        boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
-        if ((c != true) || (b != true)) {
-            return "incompatible types";
-        } else {
-            String RezultComparemore = "equal";
-            if (strBuilder2.charAt(0) == '-') {
-                RezultComparemore = strBuilder.toString();
-            } else {
-                if (strBuilder.length() > strBuilder2.length()) {
-                    RezultComparemore = strBuilder.toString();
-                }
-                if (strBuilder2.length() > strBuilder.length()) {
-                    RezultComparemore = strBuilder2.toString();
-                }
-                if (strBuilder.length() == strBuilder2.length()) {
+        String RezultComparemore = "equal";
+
+        if (strBuilder.length() > strBuilder2.length()) {
+            RezultComparemore = strBuilder.toString();
+        }
+        if (strBuilder2.length() > strBuilder.length()) {
+            RezultComparemore = strBuilder2.toString();
+        }
+        if (strBuilder.length() == strBuilder2.length()) {
 
 
-                    for (int i = 0; i<strBuilder.length(); ) {
-                        char massChar = strBuilder.charAt(i);
-                        int massInt = Character.getNumericValue(massChar);
-                        char massChar2 = strBuilder2.charAt(i);
-                        int massInt2 = Character.getNumericValue(massChar2);
-                        if (massInt == massInt2) {
-                            i++;
-                        } else {
-                            if (massInt > massInt2) {
-                                RezultComparemore = strBuilder.toString();
-                                i = strBuilder.length();
-                            } else if (massInt2 > massInt) {
-                                RezultComparemore = strBuilder2.toString();
-                                i = strBuilder.length();
-                            }
-                        }
-
-
+            for (int i = 0; i < strBuilder.length(); ) {
+                int massInt = Character.getNumericValue(strBuilder.charAt(i));
+                int massInt2 = Character.getNumericValue(strBuilder2.charAt(i));
+                if (massInt == massInt2) {
+                    i++;
+                } else {
+                    if (massInt > massInt2) {
+                        RezultComparemore = strBuilder.toString();
+                        break;
+                    } else if (massInt2 > massInt) {
+                        RezultComparemore = strBuilder2.toString();
+                        break;
                     }
-
                 }
+
+
             }
 
-            return RezultComparemore;
+
         }
+
+        return delzero(RezultComparemore);
+
     }
 
     //ВОЗВРАТ МЕНЬШЕГО
-    public String min(EDLargeInteger str, EDLargeInteger str2) {
-        StringBuilder strBuilder = new StringBuilder(str.Sdigit);
+    public String min(EDLargeInteger str2) {
+        StringBuilder strBuilder = new StringBuilder(Sdigit);
         StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
-        boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
-        if ((c != true) || (b != true)) {
-            return "incompatible types";
-        } else {
-            String RezultComparemore = "equal";
-            if (strBuilder2.charAt(0) == '-') {
-                RezultComparemore = strBuilder2.toString();
-            } else {
-                if (strBuilder.length() > strBuilder2.length()) {
-                    RezultComparemore = strBuilder2.toString();
-                }
-                if (strBuilder2.length() > strBuilder.length()) {
-                    RezultComparemore = strBuilder.toString();
-                }
-                if (strBuilder.length() == strBuilder2.length()) {
-                    for (int i=0;i<strBuilder.length();) {
-                        char massChar = strBuilder.charAt(i);
-                        int massInt = Character.getNumericValue(massChar);
-                        char massChar2 = strBuilder2.charAt(i);
-                        int massInt2 = Character.getNumericValue(massChar2);
-                        if (massInt == massInt2) {
-                            i++;
-                        } else {
-                            if (massInt < massInt2) {
-                                RezultComparemore = strBuilder.toString();
-                                i = -strBuilder.length();
-                            } else if (massInt2 < massInt) {
-                                RezultComparemore = strBuilder2.toString();
-                                i = strBuilder.length();
-                            }
-                        }
-
-
+        String RezultComparemore = "equal";
+        if (strBuilder.length() > strBuilder2.length()) {
+            RezultComparemore = strBuilder2.toString();
+        }
+        if (strBuilder2.length() > strBuilder.length()) {
+            RezultComparemore = strBuilder.toString();
+        }
+        if (strBuilder.length() == strBuilder2.length()) {
+            for (int i = 0; i < strBuilder.length(); ) {
+                int massInt = Character.getNumericValue(strBuilder.charAt(i));
+                int massInt2 = Character.getNumericValue(strBuilder2.charAt(i));
+                if (massInt == massInt2) {
+                    i++;
+                } else {
+                    if (massInt < massInt2) {
+                        RezultComparemore = strBuilder.toString();
+                        i = -strBuilder.length();
+                    } else if (massInt2 < massInt) {
+                        RezultComparemore = strBuilder2.toString();
+                        i = strBuilder.length();
                     }
                 }
+
+
             }
-            return RezultComparemore;
+
         }
+        return delzero(RezultComparemore);
+
     }
 
     //СРАВНЕНИЕ НА РАВЕНСТВО
     public boolean equal(EDLargeInteger str, EDLargeInteger str2) {
-        boolean RezultEqual=true;
+        boolean RezultEqual = true;
         StringBuilder strBuilder = new StringBuilder(str.Sdigit);
         StringBuilder strBuilder2 = new StringBuilder(str2.Sdigit);
-        boolean c = check(strBuilder.toString()), b = check(strBuilder2.toString());
-        if ((c != true) || (b != true)) {
-            return false;
-        } else {
-            if (strBuilder.charAt(0) == '-') {
-                strBuilder.deleteCharAt(0).reverse().append("0").reverse();
-            } else {
-                strBuilder.deleteCharAt(0).reverse().append("1").reverse();
-            }
 
-            if (strBuilder2.charAt(0) == '-') {
-                strBuilder2.deleteCharAt(0).reverse().append("0").reverse();
-            } else {
-                strBuilder2.deleteCharAt(0).reverse().append("1").reverse();
-            }
-
-
-            if ((strBuilder.length() == strBuilder2.length())) {
-                for (int i = strBuilder.length() - 1; i >= 0; ) {
-                    char massChar = strBuilder.charAt(i);
-                    int massInt = Character.getNumericValue(massChar);
-                    char massChar2 = strBuilder2.charAt(i);
-                    int massInt2 = Character.getNumericValue(massChar2);
-                    if (massInt == massInt2) {
-                        i--;
-                    } else {
-                        if (massInt > massInt2) {
-                            RezultEqual = false;
-                            i = -1;
-                        } else if (massInt2 > massInt) {
-                            RezultEqual = false;
-                            i = -1;
-                        }
+        if ((strBuilder.length() == strBuilder2.length())) {
+            for (int i = strBuilder.length() - 1; i >= 0; ) {
+                int massInt = Character.getNumericValue(strBuilder.charAt(i));
+                int massInt2 = Character.getNumericValue(strBuilder2.charAt(i));
+                if (massInt == massInt2) {
+                    i--;
+                } else {
+                    if (massInt > massInt2) {
+                        return false;
                     }
-
-
                 }
-            } else {
-                RezultEqual = false;
+
             }
-
-
-            return RezultEqual;
+        } else {
+            RezultEqual = false;
         }
+
+
+        return RezultEqual;
+
     }
 
 
-
-    //НЕ ДЛЯ ТЕСТОВ
+//НЕ ДЛЯ ТЕСТОВ
 
     //СЛОЖЕНИЕ
     private String summa(String str, String str2) {
@@ -665,121 +507,43 @@ public class EDLargeInteger {
         return RezultSum;
     }
 
-    //ВЫЧИТАНИЕ
-    private String subtraction(String str, String str2) {
-        StringBuilder strBuilder = new StringBuilder(str);
-        StringBuilder strBuilder2 = new StringBuilder(str2);
-        StringBuilder RezultSumbuilder = new StringBuilder("");
-
-
-        if (strBuilder2.length() > strBuilder.length()) {
-            strBuilder = new StringBuilder(str2);
-            strBuilder2 = new StringBuilder(str);
-        }
-
-        strBuilder.reverse();
-        strBuilder2.reverse();
-
-        //Подведение чисел под общий знаменатель
-        if (strBuilder.length() != strBuilder2.length()) {
-
-            while (strBuilder.length() > strBuilder2.length()) {
-                strBuilder2.append(0);
-            }
-
-            while (strBuilder2.length() > strBuilder.length()) {
-                strBuilder.append(0);
-            }
-
-        }
-
-        int[] massInt = new int[strBuilder.length()];
-        char[] massChar = new char[strBuilder.length()];
-        int[] massInt2 = new int[strBuilder.length()];
-        char[] massChar2 = new char[strBuilder.length()];
-        int ost = 0;
-
-        for (int i = 0; i < (strBuilder.length()); i++) {
-            massChar[i] = strBuilder.charAt(i);
-            massInt[i] = Character.getNumericValue(massChar[i]);
-            massChar2[i] = strBuilder2.charAt(i);
-            massInt2[i] = Character.getNumericValue(massChar2[i]);
-        }
-        for (int i = 0; i < (strBuilder.length()); i++) {
-            int sum = 0;
-            if (massInt[i] > massInt2[i]) {
-                sum = massInt[i] - massInt2[i];
-            }
-            if (massInt[i] < massInt2[i]) {
-                massInt[i + 1] = massInt[i + 1] - 1;
-                sum = massInt[i] + 10 - massInt2[i];
-            }
-
-            String a = Integer.toString(sum);
-            RezultSumbuilder.append(a);
-
-
-        }
-
-
-        RezultSumbuilder.reverse();
-        String RezultSum = RezultSumbuilder.toString();
-        RezultSum = RezultSum.replaceFirst("^0*", "");
-        return RezultSum;
-
-    }
-
-    //ПРОВЕРКА НА КОРРЕКТНОСТЬ ВВОДА
-    private boolean check(String str) {
-        StringBuilder strBuilder = new StringBuilder(str);
-        int sovpadenie = 0;
-        boolean proverka = false;
-        StringBuilder digits = new StringBuilder("0123456789");
-        char massChar[] = new char[11];
-        for (int j = 0; j < 10; j++) {
-            massChar[j] = digits.charAt(j);
-        }
-        if (strBuilder.charAt(0) == '-') {
-            sovpadenie = 1;
-        }
-
-
-        for (int i = 0; i < strBuilder.length(); i++) {
-            for (int j = 0; j < 10; j++) {
-                if (strBuilder.charAt(i) == massChar[j]) {
-
-                    sovpadenie += 1;
-                    j = 11;
-
-                }
-            }
-        }
-        if (sovpadenie != strBuilder.length()) {
-            proverka = false;
-        } else if (sovpadenie == strBuilder.length()) {
-            proverka = true;
-
-
-        }
-//если проверка равна нулю выдать ошибку
-        return proverka;
-
-    }
-
     //УДАЛЕНИЕ НЕЗНАЧАЩИХ НУЛЕЙ
-    private String delzero(StringBuilder str){
-        while(str.charAt(0)=='0')
-        {
-            str.deleteCharAt(0);
+    private String delzero(String str) {
+        StringBuilder strBuilder = new StringBuilder(str);
+        while (strBuilder.charAt(0) == '0') {
+            strBuilder.deleteCharAt(0);
         }
-    return str.toString();
-}
+        return strBuilder.toString();
+    }
 
     public static void main(String[] args) {
-        EDLargeInteger a=new EDLargeInteger("5");
-        EDLargeInteger b=new EDLargeInteger("5");
-       String c=a.summa(b);
-        System.out.println(c);
+
+        EDLargeInteger a = new EDLargeInteger("956234892");
+        EDLargeInteger b = new EDLargeInteger("98579905");
+        BigInteger d = new BigInteger("956234892");
+        BigInteger c = new BigInteger("98579905");
+        System.out.println("Сложение");
+        System.out.println(a.summa(b));
+        System.out.println(d.add(c));
+        System.out.println("Вычитание");
+        System.out.println(a.subtraction(b));
+        System.out.println(d.subtract(c));
+        System.out.println("Произведение");
+        System.out.println(a.proizv(b));
+        System.out.println(d.multiply(c));
+//        System.out.println("Деление");
+        //      System.out.println(a.divide(b));
+        //    System.out.println(d.divide(c));
+        System.out.println("Деление с остатком");
+        System.out.println(a.mod(b));
+        System.out.println(d.mod(c));
+        System.out.println("Сравнение больше");
+        System.out.println(a.max(b));
+        System.out.println(d.max(c));
+        System.out.println("Сравнение меньше ");
+        System.out.println(a.min(b));
+        System.out.println(d.min(c));
+
     }
 }
 

@@ -47,22 +47,22 @@ public class Tests {
         assertEquals("-1", edLI.mod(new EDLargeInteger("-25")));
     }
 
-    @Test
-    public void max() {
-        assertEquals("603290432", edLI.max(
-                new EDLargeInteger("603290432"),
-                new EDLargeInteger("-703290432")));
-        assertEquals("equal", edLI.min(new EDLargeInteger("234890"), new EDLargeInteger("234890")));
-    }
-
-    @Test
-    public void min() {
-        assertEquals("-73121329", edLI.min(
-                new EDLargeInteger("67132982139"),
-                new EDLargeInteger("-73121329")));
-
-        assertEquals("equal", edLI.min(new EDLargeInteger("120301320132"), new EDLargeInteger("120301320132")));
-    }
+//    @Test
+//    public void max() {
+//        assertEquals("603290432", edLI.max(
+//                new EDLargeInteger("603290432"),
+//                new EDLargeInteger("-703290432")));
+//        assertEquals("equal", edLI.min(new EDLargeInteger("234890"), new EDLargeInteger("234890")));
+//    }
+//
+//    @Test
+//    public void min() {
+//        assertEquals("-73121329", edLI.min(
+//                new EDLargeInteger("67132982139"),
+//                new EDLargeInteger("-73121329")));
+//
+//        assertEquals("equal", edLI.min(new EDLargeInteger("120301320132"), new EDLargeInteger("120301320132")));
+//    }
 
     @Test
     public void equal() {
