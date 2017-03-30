@@ -64,11 +64,11 @@ public class Tests {
 //        assertEquals("equal", edLI.min(new EDLargeInteger("120301320132"), new EDLargeInteger("120301320132")));
 //    }
 
-    @Test
-    public void equal() {
-        assertEquals(true, edLI.equal(new EDLargeInteger("23489932234"), new EDLargeInteger("23489932234")));
-        assertEquals(false, edLI.equal(new EDLargeInteger("23-9b48234"), new EDLargeInteger("23-9b48234")));
-        assertEquals(true, edLI.equal(new EDLargeInteger("-08432098"), new EDLargeInteger("-08432098")));
-    }
+//    @Test
+//    public void equal() {
+//        assertEquals(true, edLI.equal(new EDLargeInteger("23489932234"), new EDLargeInteger("23489932234")));
+//        assertEquals(false, edLI.equal(new EDLargeInteger("23-9b48234"), new EDLargeInteger("23-9b48234")));
+//        assertEquals(true, edLI.equal(new EDLargeInteger("-08432098"), new EDLargeInteger("-08432098")));
+//    }
 
 }
