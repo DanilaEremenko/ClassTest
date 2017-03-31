@@ -163,92 +163,6 @@ public class EDLargeInteger {
     }
 
 
-    //ДЕЛЕНИЕ додедлать
-    public String divide(EDLargeInteger divisor) {
-        StringBuilder delimoe = new StringBuilder(Sdigit);
-        StringBuilder delitel = new StringBuilder(divisor.Sdigit);
-        StringBuilder strBuilder = new StringBuilder();
-        StringBuilder strBuilder2 = new StringBuilder();
-        String RezultDiv = "";
-        int massInt[] = new int[delimoe.length() - 1];
-        int massInt2[] = new int[delitel.length() - 1];
-        for (int i = 0; i < delimoe.length(); i++) {
-            massInt[i] = Character.getNumericValue(delimoe.charAt(i));
-            massInt2[i] = Character.getNumericValue(delitel.charAt(i));
-        }
-
-
-        for (int i = 0; strBuilder.length() < delitel.length(); i++) {
-            if (strBuilder.length() < delitel.length()) {
-                strBuilder.append(massInt2[i]);
-            } else if (strBuilder.length() == delitel.length()) {
-                String str = strBuilder.toString();
-                while (str != "0") {
-                    str = subtraction(str, delitel.toString());
-                    RezultDiv = summa(RezultDiv, "1");
-
-                }
-            }
-        }
-
-
-        return "";
-    }
-
-    //ОСТАТОК ОТ ДЕЛЕНИЯ(доделать,попробовать объединить в один метод с делением)
-    public String mod(EDLargeInteger divisor) {
-        StringBuilder strBuilder = new StringBuilder(Sdigit);
-        StringBuilder strBuilder2 = new StringBuilder(divisor.Sdigit);
-        StringBuilder RezultDiv = new StringBuilder();
-        int divisor2 = 1;
-
-        for (int i = 0; i < strBuilder2.length(); i++) {
-            int a = Character.getNumericValue(strBuilder2.charAt(i));
-            if (i > 0) {
-                divisor2 = divisor2 * 10 + a;
-            } else {
-                divisor2 = a;
-            }
-        }
-        char massChar[] = new char[strBuilder.length()];
-        int massInt[] = new int[strBuilder.length()];
-        int div = 0;//частное
-        int ost = 0;//остаток при вычитании
-        int delimoe;
-
-
-        for (int i = 0; i < strBuilder.length(); i++) {
-
-            massChar[i] = strBuilder.charAt(i);
-            massInt[i] = Character.getNumericValue(massChar[i]);
-        }
-        for (int i = 0; i < strBuilder.length(); ) {
-
-            delimoe = ost * 10 + massInt[i];
-            while (delimoe < divisor2) {
-                delimoe = delimoe * 10 + massInt[i + 1];
-                i++;
-            }
-
-            div = delimoe / divisor2;
-            ost = delimoe % divisor2;
-            String s = Integer.toString(div);
-            RezultDiv.append(s);
-            i++;
-
-            while ((i < strBuilder.length()) && (massInt[i] == 0)) {
-                RezultDiv.append("0");
-                i++;
-            }
-
-        }
-
-
-        String Rezultdivide = "" + ost;
-        return Rezultdivide;
-
-    }
-
     //УМНОЖЕНИЕ
     public EDLargeInteger proizv(EDLargeInteger str2) {
 
@@ -365,6 +279,62 @@ public class EDLargeInteger {
 
     }
 
+
+    //ОСТАТОК ОТ ДЕЛЕНИЯ(доделать,попробовать объединить в один метод с делением)
+    public String mod(EDLargeInteger divisor) {
+        StringBuilder strBuilder = new StringBuilder(Sdigit);
+        StringBuilder strBuilder2 = new StringBuilder(divisor.Sdigit);
+        StringBuilder RezultDiv = new StringBuilder();
+        int divisor2 = 1;
+
+        for (int i = 0; i < strBuilder2.length(); i++) {
+            int a = Character.getNumericValue(strBuilder2.charAt(i));
+            if (i > 0) {
+                divisor2 = divisor2 * 10 + a;
+            } else {
+                divisor2 = a;
+            }
+        }
+        char massChar[] = new char[strBuilder.length()];
+        int massInt[] = new int[strBuilder.length()];
+        int div = 0;//частное
+        int ost = 0;//остаток при вычитании
+        int delimoe;
+
+
+        for (int i = 0; i < strBuilder.length(); i++) {
+
+            massChar[i] = strBuilder.charAt(i);
+            massInt[i] = Character.getNumericValue(massChar[i]);
+        }
+        for (int i = 0; i < strBuilder.length(); ) {
+
+            delimoe = ost * 10 + massInt[i];
+            while (delimoe < divisor2) {
+                delimoe = delimoe * 10 + massInt[i + 1];
+                i++;
+            }
+
+            div = delimoe / divisor2;
+            ost = delimoe % divisor2;
+            String s = Integer.toString(div);
+            RezultDiv.append(s);
+            i++;
+
+            while ((i < strBuilder.length()) && (massInt[i] == 0)) {
+                RezultDiv.append("0");
+                i++;
+            }
+
+        }
+
+
+        String Rezultdivide = "" + ost;
+        return Rezultdivide;
+
+    }
+
+
     // ВОЗВРАТ БОЛЬШЕГО
     public EDLargeInteger max(EDLargeInteger str2) {
         EDLargeInteger str = new EDLargeInteger(Sdigit);
@@ -377,6 +347,7 @@ public class EDLargeInteger {
 
     }
 
+
     //ВОЗВРАТ МЕНЬШЕГО
     public EDLargeInteger min(EDLargeInteger str2) {
         EDLargeInteger str = new EDLargeInteger(Sdigit);
@@ -387,6 +358,7 @@ public class EDLargeInteger {
         }
 
     }
+
 
     //СРАВНЕНИЕ НА РАВЕНСТВО
     public boolean equals(EDLargeInteger str2) {
@@ -400,57 +372,49 @@ public class EDLargeInteger {
 
 
     //НЕ ДЛЯ ТЕСТОВ
+
+
     public String toString() {
         return "" + Sdigit;
     }
 
-    private String subtraction(String str, String str2) {
-        StringBuilder RezultSub = new StringBuilder();
-        StringBuilder strBuilder = new StringBuilder(str);
-        StringBuilder strBuilder2 = new StringBuilder(str2);
 
+    //ВЫЧИТАНИЕ ДЛЯ ДЕЛЕНИЯ
+    private ArrayList subtraction(ArrayList<Integer> massInt, ArrayList<Integer> massInt2) {
+        ArrayList<Integer> Rezult = new ArrayList<Integer>();
         //Подведение чисел под общий знаменатель
-        if (strBuilder.length() != strBuilder2.length()) {
+        if (massInt.size() != massInt2.size()) {
 
-            while (strBuilder.length() > strBuilder2.length()) {
-                strBuilder2.reverse().append(0).reverse();
+            while (massInt.size() > massInt2.size()) {
+                massInt2.add(0, 0);
             }
 
-            while (strBuilder2.length() > strBuilder.length()) {
-                strBuilder.reverse().append(0).reverse();
+            while (massInt2.size() > massInt.size()) {
+                massInt.add(0, 0);
             }
 
         }
 
-        int massInt[] = new int[strBuilder.length()];
-        int massInt2[] = new int[strBuilder.length()];
         int ost = 0;
 
-        for (int i = strBuilder.length() - 1; i >= 0; i--) {
-            massInt[i] = Character.getNumericValue(strBuilder.charAt(i));
-            massInt2[i] = Character.getNumericValue(strBuilder2.charAt(i));
-        }
-        if (massInt[0] < massInt2[0]) {
+        if (massInt.get(0) < massInt2.get(0)) {
             throw new IllegalArgumentException();
         } else {
-
-            for (int i = strBuilder.length() - 1; i >= 0; i--) {
-                int sum = 0;
-                if (massInt[i] < massInt2[i]) {
-                    massInt[i - 1] = massInt[i - 1] - 1;
-                    sum = massInt[i] + 10 - massInt2[i];
+            int sum = 0;
+            for (int i = massInt.size() - 1; i >= 0; i--) {
+                if (massInt.get(i) >= massInt2.get(i)) {
+                    sum = massInt.get(i) - massInt2.get(i);
+                    Rezult.add(0, sum);
                 } else {
-                    sum = massInt[i] - massInt2[i];
+                    massInt.set(i - 1, massInt.get(i - 1) - 1);
+                    sum = massInt.get(i) + 10 - massInt2.get(i);
+                    Rezult.add(0, sum);
                 }
-                RezultSub.reverse().append(Integer.toString((sum))).reverse();
-
-
             }
-
-
+            return Rezult;
         }
-        return RezultSub.toString();
     }
+
 
     //СЛОЖЕНИЕ
     private String summa(String str, String str2) {
@@ -526,27 +490,75 @@ public class EDLargeInteger {
         while ((strBuilder.charAt(0) == '0') && (strBuilder.length() > 1)) {
             strBuilder.deleteCharAt(0);
         }
-        EDLargeInteger ed=new EDLargeInteger(strBuilder.toString());
+        EDLargeInteger ed = new EDLargeInteger(strBuilder.toString());
         return ed;
     }
 
+    private EDLargeInteger toEDLargeInteger(ArrayList<Integer> massInt) {
+        String a = "";
+        for (int i = 0; i < massInt.size(); i++) {
+            a += massInt.get(i);
+        }
+        EDLargeInteger ed = new EDLargeInteger(a);
+        return ed;
+    }
+
+
+    private EDLargeInteger div(EDLargeInteger str2) {
+        ArrayList<Integer> Rezult = new ArrayList<Integer>();
+        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
+        ArrayList<Integer> massInt3 = new ArrayList<Integer>();
+        String ost;
+        int j = 0;
+        int k = 0;
+        for (int i = 0; i < massInt.size(); ) {
+            if (massInt.get(i) == 0) {
+                Rezult.add(j, 0);
+                j++;
+                i++;
+                k = 0;
+            } else {
+                while (massInt3.size() < massInt2.size()) {
+                    massInt3.add(massInt.get(i));
+                    i++;
+                }
+                i--;//КОСТЫЛЬКОСТЫЛЬКОСТЫЛЬ
+                while (massInt3.get(0) > 0) {
+                    massInt3 = subtraction(massInt3, massInt2);
+                    k += 1;
+                }
+                Rezult.add(j, k);
+
+                k = 0;
+                j++;
+                i++;
+
+             massInt3.clear();
+            }
+        }
+        return toEDLargeInteger(Rezult);
+    }
+
+
+    //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
 
-        EDLargeInteger a = new EDLargeInteger("9562348929999999999");
-        EDLargeInteger b = new EDLargeInteger("9562348929999999999");
-        BigInteger d = new BigInteger("9562348929999999999");
-        BigInteger c = new BigInteger("9562348929999999999");
+        EDLargeInteger a = new EDLargeInteger("90000");
+        EDLargeInteger b = new EDLargeInteger("10");
+        BigInteger d = new BigInteger("90000");
+        BigInteger c = new BigInteger("10");
         System.out.println("Сложение");
         System.out.println(a.summa(b));
         System.out.println(d.add(c));
         System.out.println("Вычитание");
-    //    System.out.println(a.subtraction(b));
+        System.out.println(a.subtraction(b));
         System.out.println(d.subtract(c));
         System.out.println("Произведение");
         System.out.println(a.proizv(b));
         System.out.println(d.multiply(c));
         System.out.println("Деление");
-//      System.out.println(a.divide(b));
+        System.out.println(a.div(b));
         System.out.println(d.divide(c));
 //        System.out.println("Деление с остатком");
 //        System.out.println(a.mod(b));
@@ -565,10 +577,5 @@ public class EDLargeInteger {
         System.out.println(d.equals(c));
 
 
-//        ArrayList<Integer> IntArray = new ArrayList<Integer>(10);
-//        IntArray.add(2);
-//        System.out.println(IntArray.size());
-
     }
 }
-
