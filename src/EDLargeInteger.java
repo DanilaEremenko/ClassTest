@@ -1,3 +1,4 @@
+import com.sun.org.apache.regexp.internal.RE;
 import netscape.javascript.JSException;
 import sun.plugin.javascript.navig.Array;
 
@@ -380,7 +381,9 @@ public class EDLargeInteger {
 
 
     //ВЫЧИТАНИЕ ДЛЯ ДЕЛЕНИЯ
-    private ArrayList subtraction(ArrayList<Integer> massInt, ArrayList<Integer> massInt2) {
+    private ArrayList subtraction(ArrayList<Integer> massInt3, ArrayList<Integer> massInt4) {
+        ArrayList<Integer> massInt=new ArrayList<Integer>(massInt3);
+        ArrayList<Integer> massInt2=new ArrayList<Integer>(massInt4);
         ArrayList<Integer> Rezult = new ArrayList<Integer>();
         //Подведение чисел под общий знаменатель
         if (massInt.size() != massInt2.size()) {
@@ -398,7 +401,7 @@ public class EDLargeInteger {
         int ost = 0;
 
         if (massInt.get(0) < massInt2.get(0)) {
-            throw new IllegalArgumentException();
+            return Rezult;
         } else {
             int sum = 0;
             for (int i = massInt.size() - 1; i >= 0; i--) {
@@ -411,8 +414,8 @@ public class EDLargeInteger {
                     Rezult.add(0, sum);
                 }
             }
-            return Rezult;
         }
+        return Rezult;
     }
 
 
@@ -509,45 +512,59 @@ public class EDLargeInteger {
         ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
         ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
         ArrayList<Integer> massInt3 = new ArrayList<Integer>();
+        ArrayList<Integer> massInt4 = new ArrayList<Integer>();
         String ost;
         int j = 0;
         int k = 0;
         for (int i = 0; i < massInt.size(); ) {
-            if (massInt.get(i) == 0) {
+            if ((massInt.get(i) == 0) && (k == 0)) {
                 Rezult.add(j, 0);
                 j++;
                 i++;
-                k = 0;
             } else {
-                while (massInt3.size() < massInt2.size()) {
+                while ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
                     massInt3.add(massInt.get(i));
                     i++;
+                    if (massInt3.size() > massInt2.size())
+                        break;
+
+
                 }
-                i--;//КОСТЫЛЬКОСТЫЛЬКОСТЫЛЬ
-                while (massInt3.get(0) > 0) {
-                    massInt3 = subtraction(massInt3, massInt2);
+
+
+                for(;;)
+                {
+                    if (massInt3.get(0)==0)
+                        massInt3.remove(0);
+                    massInt4 = subtraction(massInt3, massInt2);
+                    if (massInt4.size()==0)
+                        break;
+                    else
+                        massInt3 = subtraction(massInt3, massInt2);
                     k += 1;
                 }
-                Rezult.add(j, k);
 
-                k = 0;
-                j++;
-                i++;
 
-             massInt3.clear();
             }
+            Rezult.add(j, k);
+
+            k = 0;
+            j++;
+
+
         }
+
         return toEDLargeInteger(Rezult);
     }
 
 
     //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
-
-        EDLargeInteger a = new EDLargeInteger("90000");
-        EDLargeInteger b = new EDLargeInteger("10");
-        BigInteger d = new BigInteger("90000");
-        BigInteger c = new BigInteger("10");
+           //ОГРАНИЧЕНИЕ ПОСЛЕ 8 ЗНАКОВ
+        EDLargeInteger a = new EDLargeInteger("123456700001111111199999990");
+        EDLargeInteger b = new EDLargeInteger("43");
+        BigInteger d = new BigInteger("123456700001");
+        BigInteger c = new BigInteger("43");
         System.out.println("Сложение");
         System.out.println(a.summa(b));
         System.out.println(d.add(c));
