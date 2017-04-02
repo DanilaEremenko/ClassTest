@@ -281,19 +281,14 @@ public class EDLargeInteger {
     }
 
     //ДЕЛЕНИЕ
-    public EDLargeInteger div(EDLargeInteger str2) {
-        EDLargeInteger str = new EDLargeInteger(Sdigit);
-        EDLargeInteger noll = new EDLargeInteger("0");
-        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
-        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
-        ArrayList<Integer> massInt3 = new ArrayList<Integer>(massInt);
-        ArrayList<Integer> massInt4 = new ArrayList<Integer>();
+    public EDLargeInteger div(EDLargeInteger massInt2) {
+        EDLargeInteger massInt = new EDLargeInteger(Sdigit);
         ArrayList<Integer> Rezult = new ArrayList<Integer>();
         Rezult.add(0, 0);
         for (; ; ) {
             //massInt3 = subtraction(massInt3, massInt2);
-            str = str.subtraction(str2);
-            if (str == null)
+            massInt = massInt.subtraction(massInt2);
+            if (massInt == null)
                 break;
             else {
                 Rezult.set(Rezult.size() - 1, Rezult.get(Rezult.size() - 1) + 1);
@@ -507,8 +502,8 @@ public class EDLargeInteger {
     public static void main(String[] args) {
         //3459500453-ошибки
         //345435-оишбки
-        EDLargeInteger a = new EDLargeInteger("34000000");
-        EDLargeInteger b = new EDLargeInteger("34");
+        EDLargeInteger a = new EDLargeInteger("345950045");
+        EDLargeInteger b = new EDLargeInteger("345435");
         BigInteger d = new BigInteger(a.toString());
         BigInteger c = new BigInteger(b.toString());
         System.out.println("Сложение");
