@@ -143,7 +143,7 @@ public class EDLargeInteger {
 
 
         if (massInt.get(0) < massInt2.get(0)) {
-            throw new IllegalArgumentException();
+            return null;
         } else {
 
             for (int i = massInt.size() - 1; i >= 0; i--) {
@@ -280,8 +280,44 @@ public class EDLargeInteger {
 
     }
 
+    //ДЕЛЕНИЕ
+    public EDLargeInteger div(EDLargeInteger str2) {
+        EDLargeInteger str = new EDLargeInteger(Sdigit);
+        EDLargeInteger noll = new EDLargeInteger("0");
+        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
+        ArrayList<Integer> massInt3 = new ArrayList<Integer>(massInt);
+        ArrayList<Integer> massInt4 = new ArrayList<Integer>();
+        ArrayList<Integer> Rezult = new ArrayList<Integer>();
+        Rezult.add(0, 0);
+        for (; ; ) {
+            //massInt3 = subtraction(massInt3, massInt2);
+            str = str.subtraction(str2);
+            if (str == null)
+                break;
+            else {
+                Rezult.set(Rezult.size() - 1, Rezult.get(Rezult.size() - 1) + 1);
+                for (int j = Rezult.size() - 1; j >= 0; j--) {
+                    if (Rezult.get(j) == 10) {
+                        if (j == 0) {
+                            Rezult.add(0, 1);
+                            Rezult.set(1, 0);
+                        } else {
+                            Rezult.set(j, 0);
+                            Rezult.set(j - 1, Rezult.get(j - 1) + 1);
+                        }
+                    }
 
-    //ОСТАТОК ОТ ДЕЛЕНИЯ(доделать,попробовать объединить в один метод с делением)
+
+                }
+
+
+            }
+        }
+        return toEDLargeInteger(Rezult);
+    }
+
+    //ОСТАТОК ОТ ДЕЛЕНИЯ
     public String mod(EDLargeInteger divisor) {
         StringBuilder strBuilder = new StringBuilder(Sdigit);
         StringBuilder strBuilder2 = new StringBuilder(divisor.Sdigit);
@@ -379,49 +415,6 @@ public class EDLargeInteger {
         return "" + Sdigit;
     }
 
-
-    //ВЫЧИТАНИЕ ДЛЯ ДЕЛЕНИЯ
-    private ArrayList subtraction(ArrayList<Integer> massInt3, ArrayList<Integer> massInt4) {
-        ArrayList<Integer> massInt = new ArrayList<Integer>(massInt3);
-        ArrayList<Integer> massInt2 = new ArrayList<Integer>(massInt4);
-        ArrayList<Integer> Rezult = new ArrayList<Integer>();
-        //Подведение чисел под общий знаменатель
-        if (massInt.size() != massInt2.size()) {
-
-            while (massInt.size() > massInt2.size()) {
-                massInt2.add(0, 0);
-            }
-
-            while (massInt2.size() > massInt.size()) {
-                massInt.add(0, 0);
-            }
-
-        }
-
-
-        int ost = 0;
-        int sum = 0;
-
-        for (int i = massInt.size() - 1; i >= 0; i--) {
-            if (massInt.get(0) < massInt2.get(0)) {
-                Rezult.clear();
-                return Rezult;
-            } else {
-                if (massInt.get(i) >= massInt2.get(i)) {
-                    sum = massInt.get(i) - massInt2.get(i);
-                    Rezult.add(0, sum);
-                } else {
-                    massInt.set(i - 1, massInt.get(i - 1) - 1);
-                    sum = massInt.get(i) + 10 - massInt2.get(i);
-                    Rezult.add(0, sum);
-                }
-
-            }
-        }
-        return Rezult;
-    }
-
-
     //СЛОЖЕНИЕ
     private String summa(String str, String str2) {
         // Создание strBuilder и strBuilder2
@@ -510,85 +503,14 @@ public class EDLargeInteger {
     }
 
 
-    private EDLargeInteger div(EDLargeInteger str2) {
-        ArrayList<Integer> Rezult = new ArrayList<Integer>();
-        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
-        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
-        ArrayList<Integer> massInt3 = new ArrayList<Integer>();
-        ArrayList<Integer> massInt4 = new ArrayList<Integer>();
-        String ost;
-        int j = 0;
-        int k = 0;
-        int i = 0;
-        while ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
-            massInt3.add(massInt.get(i));
-            i++;
-        }
-        for (; i < massInt.size(); ) {
-            if (massInt3.get(0) == 0)
-                massInt3.remove(0);
-            if ((massInt.get(i) == 0) && (k == 0)) {
-                Rezult.add(j, 0);
-                j++;
-                i++;
-            } else {
-                while ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
-                    if(massInt3.size()-massInt2.size()<1)
-                    {
-                    massInt3.add(massInt.get(i));
-                    i++;
-                    if ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
-                        Rezult.add(j, 0);
-                        j++;
-                    }
-                    }
-                    if (massInt3.size() > massInt2.size()) {
-                        break;
-                    }
-
-
-                }
-
-
-                for (; ; ) {
-                    if (massInt3.get(0) == 0)
-                        massInt3.remove(0);
-                    massInt4 = subtraction(massInt3, massInt2);
-                    if ((massInt4.size() == 0)&&((massInt3.size()-massInt2.size())<1)) {
-                     massInt3.add(massInt.get(i));
-                     i++;
-                        break;
-                    }
-                    else
-                        massInt3 = subtraction(massInt3, massInt2);
-                    k += 1;
-                }
-
-
-            }
-            Rezult.add(j, k);
-            if (Rezult.get(0) == 0) {
-                Rezult.remove(0);
-                j--;
-            }
-            k = 0;
-            j++;
-
-
-
-        }
-
-        return toEDLargeInteger(Rezult);
-    }
-
-
     //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
-        //ОГРАНИЧЕНИЕ ПОСЛЕ 8 ЗНАКОВ
-        EDLargeInteger a = new EDLargeInteger("2345432934299234");
-        EDLargeInteger b = new EDLargeInteger("247390490243");
-        BigInteger d = new BigInteger("2345432934299234");
-        BigInteger c = new BigInteger("247390490243");
+        //3459500453-ошибки
+        //345435-оишбки
+        EDLargeInteger a = new EDLargeInteger("34000000");
+        EDLargeInteger b = new EDLargeInteger("34");
+        BigInteger d = new BigInteger(a.toString());
+        BigInteger c = new BigInteger(b.toString());
         System.out.println("Сложение");
         System.out.println(a.summa(b));
         System.out.println(d.add(c));
