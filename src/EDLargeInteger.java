@@ -516,17 +516,28 @@ public class EDLargeInteger {
         String ost;
         int j = 0;
         int k = 0;
-        for (int i = 0; i < massInt.size(); ) {
+        int i=0;
+        while ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
+            massInt3.add(massInt.get(i));
+            i++;
+        }
+        for (; i < massInt.size(); ) {
+            if (massInt3.get(0)==0)
+                massInt3.remove(0);
             if ((massInt.get(i) == 0) && (k == 0)) {
                 Rezult.add(j, 0);
                 j++;
                 i++;
             } else {
-                while ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
+                    while ((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
                     massInt3.add(massInt.get(i));
                     i++;
+                    if((massInt3.size() < massInt2.size()) || (massInt3.get(0) < massInt2.get(0))) {
+                        Rezult.add(j, 0);
+                        j++;
+                    }
                     if (massInt3.size() > massInt2.size())
-                        break;
+                    {break;}
 
 
                 }
@@ -561,10 +572,10 @@ public class EDLargeInteger {
     //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
            //ОГРАНИЧЕНИЕ ПОСЛЕ 8 ЗНАКОВ
-        EDLargeInteger a = new EDLargeInteger("123456700001111111199999990");
-        EDLargeInteger b = new EDLargeInteger("43");
-        BigInteger d = new BigInteger("123456700001");
-        BigInteger c = new BigInteger("43");
+        EDLargeInteger a = new EDLargeInteger("23454329342992349");
+        EDLargeInteger b = new EDLargeInteger("11");
+        BigInteger d = new BigInteger("23454329342992349");
+        BigInteger c = new BigInteger("11");
         System.out.println("Сложение");
         System.out.println(a.summa(b));
         System.out.println(d.add(c));
