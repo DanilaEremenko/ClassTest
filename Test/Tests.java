@@ -1,74 +1,95 @@
-//import org.junit.Test;
-//
-//import static org.junit.Assert.*;
-//
-//
-//public class Tests {
-//    EDLargeInteger edLI = new EDLargeInteger("");
-//
-//
-//    @Test
-//    public void summa() {
-//        edLI = new EDLargeInteger("987");
-//        assertEquals("985", edLI.summa(
-//                new EDLargeInteger("-2")));
-//
-//
-//    }
-//
-//    @Test
-//    public void proizv() {
-//        edLI = new EDLargeInteger("95689");
-//        assertEquals("-64968696182621", edLI.proizv(
-//                new EDLargeInteger("-678956789")));
-//        assertEquals("incompatible types", edLI.proizv(new EDLargeInteger("--2132133")));
-//    }
-//
-//    @Test
-//    public void subtraction() {
-//        edLI = new EDLargeInteger("78979586");
-//        assertEquals("78979590",
-//                edLI.subtraction(
-//                        new EDLargeInteger("-4")));
-//        assertEquals("incompatible types", edLI.subtraction(new EDLargeInteger("0132-902913")));
-//
-//    }
-//
-//    @Test
-//    public void divide() {
-//        edLI = new EDLargeInteger("9801");
-//        assertEquals("-99", edLI.divide(
-//                new EDLargeInteger("-99")));
-//    }
-//
-//    @Test
-//    public void mod() {
-//        edLI = new EDLargeInteger("126");
-//        assertEquals("-1", edLI.mod(new EDLargeInteger("-25")));
-//    }
-//
-////    @Test
-////    public void max() {
-////        assertEquals("603290432", edLI.max(
-////                new EDLargeInteger("603290432"),
-////                new EDLargeInteger("-703290432")));
-////        assertEquals("equal", edLI.min(new EDLargeInteger("234890"), new EDLargeInteger("234890")));
-////    }
-////
-////    @Test
-////    public void min() {
-////        assertEquals("-73121329", edLI.min(
-////                new EDLargeInteger("67132982139"),
-////                new EDLargeInteger("-73121329")));
-////
-////        assertEquals("equal", edLI.min(new EDLargeInteger("120301320132"), new EDLargeInteger("120301320132")));
-////    }
-//
-////    @Test
-////    public void equal() {
-////        assertEquals(true, edLI.equal(new EDLargeInteger("23489932234"), new EDLargeInteger("23489932234")));
-////        assertEquals(false, edLI.equal(new EDLargeInteger("23-9b48234"), new EDLargeInteger("23-9b48234")));
-////        assertEquals(true, edLI.equal(new EDLargeInteger("-08432098"), new EDLargeInteger("-08432098")));
-////    }
-//
-//}
+import org.junit.Test;
+
+import java.math.BigInteger;
+
+import static org.junit.Assert.*;
+
+
+public class Tests {
+
+
+
+    @Test
+    public void summa() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.add(BI2).toString(), edLI.summa(edLI2).toString());
+        
+    }
+
+    @Test
+    public void proizv() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.multiply(BI2).toString(), edLI.proizv(edLI2).toString());
+    }
+
+    @Test
+    public void subtraction() {
+        EDLargeInteger edLI = new EDLargeInteger("93299");
+        EDLargeInteger edLI2= new EDLargeInteger("932");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.subtract(BI2).toString(), edLI.subtraction(edLI2).toString());
+
+
+    }
+
+    @Test
+    public void divide() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.divide(BI2).toString(), edLI.div(edLI2).toString());
+    }
+
+    @Test
+    public void mod() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.mod(BI2).toString(), edLI.mod(edLI2).toString());
+    }
+
+    @Test
+    public void max() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.max(BI2).toString(), edLI.max(edLI2).toString());
+    }
+
+    @Test
+    public void min() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.min(BI2).toString(), edLI.min(edLI2).toString());
+    }
+
+    @Test
+    public void equals() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.equals(BI2), edLI.equals(edLI2));
+    }
+
+    @Test
+    public void compareTo() {
+        EDLargeInteger edLI = new EDLargeInteger("987");
+        EDLargeInteger edLI2= new EDLargeInteger("93299");
+        BigInteger BI =new BigInteger(edLI.toString());
+        BigInteger BI2=new BigInteger(edLI2.toString());
+        assertEquals(BI.compareTo(BI2), edLI.compareTo(edLI2));
+    }
+}
