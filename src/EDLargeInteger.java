@@ -163,6 +163,19 @@ public class EDLargeInteger {
         }
     }
 
+    public Integer size()
+    {
+        return Sdigit.length();
+
+    }
+
+    public EDLargeInteger delete(int number)
+    {
+        StringBuilder str=new StringBuilder(Sdigit);
+        EDLargeInteger a=new EDLargeInteger(str.deleteCharAt(number).toString());
+        return a;
+    }
+
 
     //УМНОЖЕНИЕ
     public EDLargeInteger proizv(EDLargeInteger str2) {
@@ -281,35 +294,62 @@ public class EDLargeInteger {
     }
 
     //ДЕЛЕНИЕ
-    public EDLargeInteger div(EDLargeInteger massInt2) {
-        EDLargeInteger massInt = new EDLargeInteger(Sdigit);
+    public EDLargeInteger div(EDLargeInteger str2) {
+        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
+        ArrayList<Integer> massInt2original = new ArrayList<Integer>(str2.IntArray);
         ArrayList<Integer> Rezult = new ArrayList<Integer>();
-        Rezult.add(0, 0);
-        for (; ; ) {
-            //massInt3 = subtraction(massInt3, massInt2);
-            massInt = massInt.subtraction(massInt2);
-            if (massInt == null)
-                break;
-            else {
-                Rezult.set(Rezult.size() - 1, Rezult.get(Rezult.size() - 1) + 1);
-                for (int j = Rezult.size() - 1; j >= 0; j--) {
-                    if (Rezult.get(j) == 10) {
-                        if (j == 0) {
-                            Rezult.add(0, 1);
-                            Rezult.set(1, 0);
-                        } else {
-                            Rezult.set(j, 0);
-                            Rezult.set(j - 1, Rezult.get(j - 1) + 1);
+        StringBuilder massStr = new StringBuilder(Sdigit);
+        StringBuilder massStr2 = new StringBuilder(str2.Sdigit);
+        EDLargeInteger nol=new EDLargeInteger("0");
+        int j = 0;
+        int k = 0;
+        while ((massStr.length() - massStr2.length()) > 1) {
+            massStr2.append("0");
+            if ((massStr.length() - massStr2.length() == 1) && (Integer.valueOf(massStr.charAt(0)) > Integer.valueOf(massStr2.charAt(0)))) {
+                massStr2.append("0");
+            }
+
+
+        }
+        EDLargeInteger a = new EDLargeInteger(massStr.toString());
+        EDLargeInteger b = new EDLargeInteger(massStr2.toString());
+        EDLargeInteger boriginal=new EDLargeInteger(str2.Sdigit);
+        Rezult.add(0,0);
+            while((massStr2.toString().equals(str2.Sdigit))!=true) {
+                if (a.subtraction(b) != null) {
+                    a = a.subtraction(b);
+                    Rezult.set(Rezult.size() - 1, Rezult.get(Rezult.size() - 1) + 1);
+                    for (j = Rezult.size() - 1; j >= 0; j--) {
+                        if (Rezult.get(j) == 10) {
+                            if (j == 0) {
+                                Rezult.add(0, 1);
+                                Rezult.set(1, 0);
+                            } else {
+                                Rezult.set(j, 0);
+                                Rezult.set(j - 1, Rezult.get(j - 1) + 1);
+                            }
                         }
                     }
-
-
+                }
+                if(a.equals(nol)==true) {
+                    while(massStr2.toString().equals(str2.Sdigit)!=true) {
+                        Rezult.add(Rezult.size(), 0);
+                          massStr2.reverse().deleteCharAt(0).reverse();
+                    }
+                }
+                else {
+                    while ((a.subtraction(b) == null)) {
+                        b = new EDLargeInteger(massStr2.reverse().deleteCharAt(0).reverse().toString());
+                        Rezult.add(0, 0);
+                        if (boriginal.toString() == b.toString())
+                            break;
+                    }
                 }
 
-
             }
-        }
-        return toEDLargeInteger(Rezult);
+
+            return toEDLargeInteger(Rezult);
     }
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
@@ -500,12 +540,16 @@ public class EDLargeInteger {
 
     //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
-        //3459500453-ошибки
-        //345435-оишбки
-        EDLargeInteger a = new EDLargeInteger("345950045");
-        EDLargeInteger b = new EDLargeInteger("345435");
+        //3459500453-ошибки3459239903940904309
+        //345435-оишбки34578
+        EDLargeInteger a = new EDLargeInteger("100");
+        EDLargeInteger b = new EDLargeInteger("5");
         BigInteger d = new BigInteger(a.toString());
         BigInteger c = new BigInteger(b.toString());
+        BigInteger no=new BigInteger("0");
+        BigInteger i= new BigInteger("1");
+        BigInteger j=new BigInteger("10026782330262");
+        System.out.println();
         System.out.println("Сложение");
         System.out.println(a.summa(b));
         System.out.println(d.add(c));
