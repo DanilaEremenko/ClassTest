@@ -1,6 +1,7 @@
 import com.sun.org.apache.regexp.internal.RE;
 import netscape.javascript.JSException;
 import sun.plugin.javascript.navig.Array;
+import sun.security.tools.keytool.Resources_zh_CN;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -139,12 +140,18 @@ public class EDLargeInteger {
 
         }
 
-        int ost = 0;
-
-
-        if (massInt.get(0) < massInt2.get(0)) {
+        for(int i=0;i<massInt.size();i++)
+        {
+        if(massInt.get(i)>massInt2.get(i)) {
+            break;
+        }
+        if(massInt.get(i)<massInt2.get(i))
+        {
             return null;
-        } else {
+        }
+        }
+
+
 
             for (int i = massInt.size() - 1; i >= 0; i--) {
                 int sum = 0;
@@ -160,7 +167,7 @@ public class EDLargeInteger {
             }
 
             return delzero(RezultSub.toString());
-        }
+
     }
 
     public Integer size()
@@ -316,7 +323,7 @@ public class EDLargeInteger {
         EDLargeInteger b = new EDLargeInteger(massStr2.toString());
         EDLargeInteger boriginal=new EDLargeInteger(str2.Sdigit);
         Rezult.add(0,0);
-            while((massStr2.toString().equals(str2.Sdigit))!=true) {
+            while((boriginal.equals(b)!=true)||(a.subtraction(b)!=null)) {
                 if (a.subtraction(b) != null) {
                     a = a.subtraction(b);
                     Rezult.set(Rezult.size() - 1, Rezult.get(Rezult.size() - 1) + 1);
@@ -332,6 +339,10 @@ public class EDLargeInteger {
                         }
                     }
                 }
+                if ((boriginal.equals(b)==true)&&(a.subtraction(b)==null))
+                {
+                    return toEDLargeInteger(Rezult);
+                }
                 if(a.equals(nol)==true) {
                     while(massStr2.toString().equals(str2.Sdigit)!=true) {
                         Rezult.add(Rezult.size(), 0);
@@ -341,9 +352,9 @@ public class EDLargeInteger {
                 else {
                     while ((a.subtraction(b) == null)) {
                         b = new EDLargeInteger(massStr2.reverse().deleteCharAt(0).reverse().toString());
-                        Rezult.add(0, 0);
-                        if (boriginal.toString() == b.toString())
-                            break;
+                        Rezult.add(Rezult.size(), 0);
+                        if ((boriginal.equals(b)==true)&&(a.subtraction(b)==null))
+                            return toEDLargeInteger(Rezult);
                     }
                 }
 
@@ -353,57 +364,10 @@ public class EDLargeInteger {
     }
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
-    public String mod(EDLargeInteger divisor) {
-        StringBuilder strBuilder = new StringBuilder(Sdigit);
-        StringBuilder strBuilder2 = new StringBuilder(divisor.Sdigit);
-        StringBuilder RezultDiv = new StringBuilder();
-        int divisor2 = 1;
-
-        for (int i = 0; i < strBuilder2.length(); i++) {
-            int a = Character.getNumericValue(strBuilder2.charAt(i));
-            if (i > 0) {
-                divisor2 = divisor2 * 10 + a;
-            } else {
-                divisor2 = a;
-            }
-        }
-        char massChar[] = new char[strBuilder.length()];
-        int massInt[] = new int[strBuilder.length()];
-        int div = 0;//частное
-        int ost = 0;//остаток при вычитании
-        int delimoe;
-
-
-        for (int i = 0; i < strBuilder.length(); i++) {
-
-            massChar[i] = strBuilder.charAt(i);
-            massInt[i] = Character.getNumericValue(massChar[i]);
-        }
-        for (int i = 0; i < strBuilder.length(); ) {
-
-            delimoe = ost * 10 + massInt[i];
-            while (delimoe < divisor2) {
-                delimoe = delimoe * 10 + massInt[i + 1];
-                i++;
-            }
-
-            div = delimoe / divisor2;
-            ost = delimoe % divisor2;
-            String s = Integer.toString(div);
-            RezultDiv.append(s);
-            i++;
-
-            while ((i < strBuilder.length()) && (massInt[i] == 0)) {
-                RezultDiv.append("0");
-                i++;
-            }
-
-        }
-
-
-        String Rezultdivide = "" + ost;
-        return Rezultdivide;
-
+    public EDLargeInteger mod(EDLargeInteger divisor) {
+        EDLargeInteger delimoe=new EDLargeInteger(Sdigit);
+        EDLargeInteger chastnoe=new EDLargeInteger(delimoe.div(divisor).toString());
+        return delimoe.subtraction(divisor.proizv(chastnoe));
     }
 
 
@@ -542,12 +506,12 @@ public class EDLargeInteger {
     public static void main(String[] args) {
         //3459500453-ошибки3459239903940904309
         //345435-оишбки34578
-        EDLargeInteger a = new EDLargeInteger("100");
-        EDLargeInteger b = new EDLargeInteger("5");
+        //1000000000000
+        //123
+        EDLargeInteger a = new EDLargeInteger("82348943289438989595489458945");
+        EDLargeInteger b = new EDLargeInteger("1289438434533");
         BigInteger d = new BigInteger(a.toString());
         BigInteger c = new BigInteger(b.toString());
-        BigInteger no=new BigInteger("0");
-        BigInteger i= new BigInteger("1");
         BigInteger j=new BigInteger("10026782330262");
         System.out.println();
         System.out.println("Сложение");
@@ -562,9 +526,9 @@ public class EDLargeInteger {
         System.out.println("Деление");
         System.out.println(a.div(b));
         System.out.println(d.divide(c));
-//        System.out.println("Деление с остатком");
-//        System.out.println(a.mod(b));
-//        System.out.println(d.mod(c));
+        System.out.println("Деление с остатком");
+        System.out.println(a.mod(b));
+        System.out.println(d.mod(c));
         System.out.println("Compare");
         System.out.println(a.compareTo(b));
         System.out.println(d.compareTo(c));
@@ -577,6 +541,9 @@ public class EDLargeInteger {
         System.out.println("Сравнение на равенство");
         System.out.println(a.equals(b));
         System.out.println(d.equals(c));
+        System.out.println("Проверка вычитания");
+        a=new EDLargeInteger("10000000");
+        b=new EDLargeInteger("12300000");
 
 
     }
