@@ -439,8 +439,6 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
 
     //СРАВНЕНИЕ С РАБОТОЙ BGI
-    //898895689458998954
-    //4598489
     public static void main(String[] args) {
         EDLargeInteger a = new EDLargeInteger("5698");
         EDLargeInteger b = new EDLargeInteger("437857389573909");
