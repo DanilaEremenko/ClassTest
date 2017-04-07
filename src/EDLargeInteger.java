@@ -141,17 +141,6 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             massInt2 = new ArrayList<Integer>(IntArray);
 
         }
-//        if (massInt.size() != massInt2.size()) {
-//
-//            while (massInt.size() > massInt2.size()) {
-//                massInt2.add(0, 0);
-//            }
-//
-//            while (massInt2.size() > massInt.size()) {
-//                massInt.add(0, 0);
-//            }
-//
-//        }
 
         ArrayList[] massSlog = new ArrayList[massInt2.size()];
         for (int i = 0; i < massInt2.size(); i++) {
@@ -169,8 +158,8 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             for (int j = massInt.size() - 1; j >= 0; j--) {
 
                 proizv = massInt.get(j) * massInt2.get(i) + ost;
+                ost = proizv/10;
                 proizv = proizv % 10;
-                ost = ost/10;
                 massSlog[i].add(0, proizv);
 
 
@@ -185,7 +174,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
                 massSlog[i].add (0);
             }
 
-
+ost=0;
         }
 
 
@@ -197,6 +186,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         return Rezult;
 
     }
+
 
     //ДЕЛЕНИЕ
     public EDLargeInteger div(EDLargeInteger str2) {
@@ -259,12 +249,14 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         return delzero(toEDLargeInteger(Rezult));
     }
 
+
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public EDLargeInteger mod(EDLargeInteger divisor) {
         EDLargeInteger delimoe = new EDLargeInteger(Sdigit);
         EDLargeInteger chastnoe = new EDLargeInteger(delimoe.div(divisor).toString());
         return delimoe.subtraction(chastnoe.proizv(divisor));
     }
+
 
     @Override
     public int compareTo(EDLargeInteger str2) {
@@ -388,8 +380,8 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
-        EDLargeInteger a = new EDLargeInteger("437857389573909");
-        EDLargeInteger b = new EDLargeInteger("111");
+        EDLargeInteger a = new EDLargeInteger("99954395049043905");
+        EDLargeInteger b = new EDLargeInteger("1111");
         BigInteger d = new BigInteger(a.toString());
         BigInteger c = new BigInteger(b.toString());
         System.out.println();
