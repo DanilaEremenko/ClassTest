@@ -40,41 +40,10 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     }
 
-    @Override
-    public int compareTo(EDLargeInteger str2) {
-        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
-        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
-        int Rezult = 0;
-        if (massInt.size() == massInt2.size()) {
-            for (int i = 0; i < massInt.size(); ) {
-                if (massInt.get(i) == massInt2.get(i)) {
-                    i++;
-                } else {
-                    if (massInt.get(i) > massInt2.get(i)) {
-                        Rezult = 1;
-                        break;
-                    } else if (massInt2.get(i) > massInt.get(i)) {
-                        Rezult = -1;
-                        break;
-                    }
-                }
-
-
-            }
-        } else {
-            if (massInt.size() > massInt2.size())
-                Rezult = 1;
-            else if (massInt2.size() > massInt.size())
-                Rezult = -1;
-
-        }
-        return Rezult;
-    }
-
 
     //СЛОЖЕНИЕ
     public EDLargeInteger summa(EDLargeInteger str2) {
-        ArrayList<Integer>Rezult=new ArrayList<Integer>();
+        ArrayList<Integer> Rezult = new ArrayList<Integer>();
         ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
         ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
         //Подведение чисел под общий знаменатель
@@ -103,11 +72,11 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
                 ost = sum / 10;
                 sum = sum % 10;
             }
-            Rezult.add(0,sum);
+            Rezult.add(0, sum);
 
         }
         if (ost != 0) {
-            Rezult.add(0,ost);
+            Rezult.add(0, ost);
         }
 
         return toEDLargeInteger(Rezult);
@@ -117,7 +86,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //ВЫЧИТАНИЕ
     public EDLargeInteger subtraction(EDLargeInteger str2) {
-        ArrayList<Integer>Rezult=new ArrayList<Integer>();
+        ArrayList<Integer> Rezult = new ArrayList<Integer>();
         ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
         ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
 
@@ -153,7 +122,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             } else {
                 sum = massInt.get(i) - massInt2.get(i);
             }
-            Rezult.add(0,sum);
+            Rezult.add(0, sum);
 
 
         }
@@ -165,29 +134,28 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //УМНОЖЕНИЕ
     public EDLargeInteger proizv(EDLargeInteger str2) {
-        ArrayList<Integer>massInt=new ArrayList<Integer>(IntArray);
-        ArrayList<Integer>massInt2=new ArrayList<Integer>(str2.IntArray);
-        if(massInt.size()<massInt2.size())
-        {
-            massInt=new ArrayList<Integer>(str2.IntArray);
-            massInt2=new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
+        if (massInt.size() < massInt2.size()) {
+            massInt = new ArrayList<Integer>(str2.IntArray);
+            massInt2 = new ArrayList<Integer>(IntArray);
 
         }
-        if (massInt.size() != massInt2.size()) {
+//        if (massInt.size() != massInt2.size()) {
+//
+//            while (massInt.size() > massInt2.size()) {
+//                massInt2.add(0, 0);
+//            }
+//
+//            while (massInt2.size() > massInt.size()) {
+//                massInt.add(0, 0);
+//            }
+//
+//        }
 
-            while (massInt.size() > massInt2.size()) {
-                massInt2.add(0, 0);
-            }
-
-            while (massInt2.size() > massInt.size()) {
-                massInt.add(0, 0);
-            }
-
-        }
-
-        ArrayList[] massSlog=new ArrayList[massInt2.size()];
-        for (int i = massInt2.size() - 1; i >= 0; i--) {
-            massSlog[i]=new ArrayList<Integer>();
+        ArrayList[] massSlog = new ArrayList[massInt2.size()];
+        for (int i = 0; i < massInt2.size(); i++) {
+            massSlog[i] = new ArrayList<Integer>();
         }
 
 
@@ -197,67 +165,32 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         int ost = 0;
 
 
-        for (int i = massInt.size() - 1; i >= 0; i--) {
-            for (int j = massInt2.size() - 1; j >= 0; j--) {
+        for (int i = massInt2.size() - 1; i >= 0; i--) {
+            for (int j = massInt.size() - 1; j >= 0; j--) {
 
+                proizv = massInt.get(j) * massInt2.get(i) + ost;
+                proizv = proizv % 10;
+                ost = ost/10;
+                massSlog[i].add(0, proizv);
 
-                if (ost == 0) {
-
-                    proizv = massInt.get(j) * massInt2.get(i);
-                    ost = proizv / 10;
-                    proizv = proizv % 10;
-
-                } else {
-
-                    proizv = massInt.get(j) * massInt2.get(i) + ost;
-                    ost = proizv / 10;
-                    proizv = proizv % 10;
-
-                }
-
-                massSlog[i].add(0,proizv);
 
             }
 
-
-            int k = i;
-            if (ost == 0) {
-                while (k < (massInt.size() - 1)) {
-                    k++;
-                    massSlog[i].add(0,0);
-                }
-            } else {
+            if(ost!=0)
                 massSlog[i].add(0,ost);
-                while (k < (massInt.size() - 1)) {
-                    k++;
-                    massSlog[i].add(0);
-                }
 
-            }
-            ost = 0;
-
-
-        }
-//Получили составные части произведения
-
-
-        //  Подведение чисел под общий знаменатель
-        int max = 0;
-        for (int i = 0; i < massInt.size(); i++) {
-            if (max < massSlog[i].size())
-                max = massSlog[i].size();
-        }
-
-        for (int i = 0; i < massInt.size(); i++) {
-            if (massSlog[i].size() < max) {
-                while (massSlog[i].size() < max) {
-                    massSlog[i].add(0,0);
-                }
+            int k = massInt2.size() - i-1;
+            while (k > 0) {
+                k--;
+                massSlog[i].add (0);
             }
 
+
         }
+
+
         EDLargeInteger Rezult = new EDLargeInteger("");
-        for (int i = 0; i < massInt.size(); i++) {
+        for (int i = 0; i < massInt2.size(); i++) {
             Rezult = Rezult.summa(toEDLargeInteger(massSlog[i]));
         }
 
@@ -268,10 +201,8 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     //ДЕЛЕНИЕ
     public EDLargeInteger div(EDLargeInteger str2) {
         ArrayList<Integer> Rezult = new ArrayList<Integer>();
-        ArrayList<Integer>massStr3=new ArrayList<Integer>(IntArray);
-        ArrayList<Integer>massStr4=new ArrayList<Integer>(str2.IntArray);
-        StringBuilder massStr = new StringBuilder(Sdigit);
-        StringBuilder massStr2 = new StringBuilder(str2.Sdigit);
+        ArrayList<Integer> massStr3 = new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massStr4 = new ArrayList<Integer>(str2.IntArray);
         EDLargeInteger nol = new EDLargeInteger("0");
         while ((massStr3.size() - massStr4.size()) > 1) {
             massStr4.add(0);
@@ -283,6 +214,10 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         }
         EDLargeInteger a = new EDLargeInteger(ArraytoString(massStr3));
         EDLargeInteger b = new EDLargeInteger(ArraytoString(massStr4));
+        if (a.compareTo(b) == -1)
+            return new EDLargeInteger("0");
+        if (a.compareTo(b) == 0)
+            return new EDLargeInteger("1");
         EDLargeInteger boriginal = new EDLargeInteger(str2.Sdigit);
         Rezult.add(0, 0);
         while ((boriginal.equals(b) != true) || (a.subtraction(b) != null)) {
@@ -307,12 +242,11 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             if (a.equals(nol) == true) {
                 while (ArraytoString(massStr4).equals(str2.Sdigit) != true) {
                     Rezult.add(Rezult.size(), 0);
-                    massStr4.remove(massStr4.size()-1);
-                    massStr2.reverse().deleteCharAt(0).reverse();
+                    massStr4.remove(massStr4.size() - 1);
                 }
             } else {
                 while ((a.subtraction(b) == null)) {
-                    massStr4.remove(massStr4.size()-1);
+                    massStr4.remove(massStr4.size() - 1);
                     b = new EDLargeInteger(ArraytoString(massStr4));
                     Rezult.add(Rezult.size(), 0);
                     if ((boriginal.equals(b) == true) && (a.subtraction(b) == null))
@@ -327,9 +261,50 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public EDLargeInteger mod(EDLargeInteger divisor) {
-        EDLargeInteger delimoe=new EDLargeInteger(Sdigit);
+        EDLargeInteger delimoe = new EDLargeInteger(Sdigit);
         EDLargeInteger chastnoe = new EDLargeInteger(delimoe.div(divisor).toString());
         return delimoe.subtraction(chastnoe.proizv(divisor));
+    }
+
+    @Override
+    public int compareTo(EDLargeInteger str2) {
+        ArrayList<Integer> massInt = new ArrayList<Integer>(IntArray);
+        ArrayList<Integer> massInt2 = new ArrayList<Integer>(str2.IntArray);
+        int Rezult = 0;
+        if (massInt.size() == massInt2.size()) {
+            for (int i = 0; i < massInt.size(); ) {
+                if (massInt.get(i) == massInt2.get(i)) {
+                    i++;
+                } else {
+                    if (massInt.get(i) > massInt2.get(i)) {
+                        Rezult = 1;
+                        break;
+                    } else if (massInt2.get(i) > massInt.get(i)) {
+                        Rezult = -1;
+                        break;
+                    }
+                }
+
+
+            }
+        } else {
+            if (massInt.size() > massInt2.size())
+                Rezult = 1;
+            else if (massInt2.size() > massInt.size())
+                Rezult = -1;
+
+        }
+        return Rezult;
+    }
+
+
+    public boolean equals(EDLargeInteger str2) {
+        EDLargeInteger str = new EDLargeInteger(Sdigit);
+        if (str.compareTo(str2) == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -357,21 +332,15 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     }
 
 
-    //СРАВНЕНИЕ НА РАВЕНСТВО
-    public boolean equals(EDLargeInteger str2) {
-        EDLargeInteger str = new EDLargeInteger(Sdigit);
-        if (str.compareTo(str2) == 0) {
-            return true;
-        } else {
-            return false;
-        }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 
-
-    private void delete(int number) {
+    public void delete(int number) {
         StringBuilder str = new StringBuilder(Sdigit);
-        Sdigit=str.deleteCharAt(number).toString();
+        Sdigit = str.deleteCharAt(number).toString();
         IntArray.remove(number);
 
     }
@@ -388,8 +357,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     }
 
 
-    private String ArraytoString(ArrayList<Integer>massInt)
-    {
+    private String ArraytoString(ArrayList<Integer> massInt) {
         String string = "";
         for (int i = 0; i < massInt.size(); i++) {
             string += massInt.get(i);
@@ -398,23 +366,13 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     }
 
-    //НЕ ДЛЯ ТЕСТОВ
-
-    private String delzero(String str) {
-        StringBuilder strBuilder = new StringBuilder(str);
-        while ((strBuilder.charAt(0) == '0') && (strBuilder.length() > 1)) {
-            strBuilder.deleteCharAt(0);
-        }
-        return strBuilder.toString();
-    }
-
 
     private EDLargeInteger delzero(EDLargeInteger ed) {
         StringBuilder strBuilder = new StringBuilder(ed.toString());
         while ((strBuilder.charAt(0) == '0') && (strBuilder.length() > 1)) {
             strBuilder.deleteCharAt(0);
         }
-        ed=new EDLargeInteger(strBuilder.toString());
+        ed = new EDLargeInteger(strBuilder.toString());
         return ed;
     }
 
@@ -424,24 +382,14 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         for (int i = 0; i < massInt.size(); i++) {
             string += massInt.get(i);
         }
-        EDLargeInteger ed = new EDLargeInteger(delzero(string));
-        return ed;
+        return delzero(new EDLargeInteger(string));
     }
-
-
-    private EDLargeInteger toEDLargeInteger(String string) {
-        EDLargeInteger ed = new EDLargeInteger(string);
-        return ed;
-
-    }
-
-
 
 
     //СРАВНЕНИЕ С РАБОТОЙ BGI
     public static void main(String[] args) {
-        EDLargeInteger a = new EDLargeInteger("5698");
-        EDLargeInteger b = new EDLargeInteger("437857389573909");
+        EDLargeInteger a = new EDLargeInteger("437857389573909");
+        EDLargeInteger b = new EDLargeInteger("111");
         BigInteger d = new BigInteger(a.toString());
         BigInteger c = new BigInteger(b.toString());
         System.out.println();
@@ -472,6 +420,12 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         System.out.println("Сравнение на равенство");
         System.out.println(a.equals(b));
         System.out.println(d.equals(c));
+//        EDLargeInteger delimoe=new EDLargeInteger("437857389573909");
+//        EDLargeInteger divisor=new EDLargeInteger("4378573895739");
+//        EDLargeInteger chastnoe = new EDLargeInteger(delimoe.div(divisor).toString());
+//        System.out.println(delimoe.subtraction(chastnoe.proizv(divisor)));
+//        System.out.println(new EDLargeInteger("4378573895739").proizv(new EDLargeInteger("100")));
+
 
     }
 }
