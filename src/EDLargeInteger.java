@@ -1,9 +1,3 @@
-import com.sun.org.apache.regexp.internal.RE;
-import netscape.javascript.JSException;
-import sun.plugin.javascript.navig.Array;
-import sun.security.tools.keytool.Resources_zh_CN;
-
-import java.math.BigInteger;
 import java.util.*;
 
 public class EDLargeInteger implements Comparable<EDLargeInteger> {
@@ -290,13 +284,17 @@ ost=0;
     }
 
 
-    public boolean equals(EDLargeInteger str2) {
-        EDLargeInteger str = new EDLargeInteger(Sdigit);
-        if (str.compareTo(str2) == 0) {
-            return true;
-        } else {
-            return false;
+    @Override
+    public boolean equals(Object another)
+    {
+        if(another instanceof EDLargeInteger) {
+            EDLargeInteger anotherED = (EDLargeInteger) another;
+            return this.Sdigit.equals(anotherED.toString());
         }
+        return false;
+
+
+
     }
 
 
@@ -326,7 +324,9 @@ ost=0;
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+
+        return Sdigit.hashCode()+IntArray.hashCode();
+
     }
 
 
@@ -378,46 +378,4 @@ ost=0;
     }
 
 
-    //СРАВНЕНИЕ С РАБОТОЙ BGI
-    public static void main(String[] args) {
-        EDLargeInteger a = new EDLargeInteger("99954395049043905");
-        EDLargeInteger b = new EDLargeInteger("1111");
-        BigInteger d = new BigInteger(a.toString());
-        BigInteger c = new BigInteger(b.toString());
-        System.out.println();
-        System.out.println("Сложение");
-        System.out.println(a.summa(b));
-        System.out.println(d.add(c));
-        System.out.println("Вычитание");
-        System.out.println(a.subtraction(b));
-        System.out.println(d.subtract(c));
-        System.out.println("Произведение");
-        System.out.println(a.proizv(b));
-        System.out.println(d.multiply(c));
-        System.out.println("Деление");
-        System.out.println(a.div(b));
-        System.out.println(d.divide(c));
-        System.out.println("Деление с остатком");
-        System.out.println(a.mod(b));
-        System.out.println(d.mod(c));
-        System.out.println("Compare");
-        System.out.println(a.compareTo(b));
-        System.out.println(d.compareTo(c));
-        System.out.println("Сравнение больше");
-        System.out.println(a.max(b));
-        System.out.println(d.max(c));
-        System.out.println("Сравнение меньше ");
-        System.out.println(a.min(b));
-        System.out.println(d.min(c));
-        System.out.println("Сравнение на равенство");
-        System.out.println(a.equals(b));
-        System.out.println(d.equals(c));
-//        EDLargeInteger delimoe=new EDLargeInteger("437857389573909");
-//        EDLargeInteger divisor=new EDLargeInteger("4378573895739");
-//        EDLargeInteger chastnoe = new EDLargeInteger(delimoe.div(divisor).toString());
-//        System.out.println(delimoe.subtraction(chastnoe.proizv(divisor)));
-//        System.out.println(new EDLargeInteger("4378573895739").proizv(new EDLargeInteger("100")));
-
-
-    }
 }
