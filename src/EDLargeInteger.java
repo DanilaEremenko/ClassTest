@@ -330,7 +330,7 @@ ost=0;
     }
 
 
-    public void delete(int number) {
+    private void delete(int number) {
         StringBuilder str = new StringBuilder(Sdigit);
         Sdigit = str.deleteCharAt(number).toString();
         IntArray.remove(number);
