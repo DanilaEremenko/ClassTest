@@ -152,23 +152,23 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             for (int j = massInt.size() - 1; j >= 0; j--) {
 
                 proizv = massInt.get(j) * massInt2.get(i) + ost;
-                ost = proizv/10;
+                ost = proizv / 10;
                 proizv = proizv % 10;
                 massSlog[i].add(0, proizv);
 
 
             }
 
-            if(ost!=0)
-                massSlog[i].add(0,ost);
+            if (ost != 0)
+                massSlog[i].add(0, ost);
 
-            int k = massInt2.size() - i-1;
+            int k = massInt2.size() - i - 1;
             while (k > 0) {
                 k--;
-                massSlog[i].add (0);
+                massSlog[i].add(0);
             }
 
-ost=0;
+            ost = 0;
         }
 
 
@@ -285,14 +285,12 @@ ost=0;
 
 
     @Override
-    public boolean equals(Object another)
-    {
-        if(another instanceof EDLargeInteger) {
+    public boolean equals(Object another) {
+        if (another instanceof EDLargeInteger) {
             EDLargeInteger anotherED = (EDLargeInteger) another;
             return this.Sdigit.equals(anotherED.toString());
         }
         return false;
-
 
 
     }
@@ -325,7 +323,7 @@ ost=0;
     @Override
     public int hashCode() {
 
-        return Sdigit.hashCode()+IntArray.hashCode();
+        return Sdigit.hashCode() + IntArray.hashCode();
 
     }
 
@@ -336,13 +334,7 @@ ost=0;
         IntArray.remove(number);
 
     }
-
-
-    public Integer size() {
-        return IntArray.size();
-
-    }
-
+    
 
     public String toString() {
         return Sdigit;
