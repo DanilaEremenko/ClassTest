@@ -20,12 +20,12 @@ public class Tests {
     }
 
     @Test
-    public void proizv() {
+    public void multiply() {
         EDLargeInteger edLI = new EDLargeInteger("234892348453390523");
         EDLargeInteger edLI2= new EDLargeInteger("930045045909096786089586");
         BigInteger BI =new BigInteger(edLI.toString());
         BigInteger BI2=new BigInteger(edLI2.toString());
-        assertEquals(BI.multiply(BI2).toString(), edLI.proizv(edLI2).toString());
+        assertEquals(BI.multiply(BI2).toString(), edLI.multiply(edLI2).toString());
     }
 
     @Test
@@ -89,4 +89,5 @@ public class Tests {
         BigInteger BI2=new BigInteger(edLI2.toString());
         assertEquals(BI.compareTo(BI2), edLI.compareTo(edLI2));
     }
+
 }
