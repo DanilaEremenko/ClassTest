@@ -12,7 +12,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
         for (int i = 0; i < strDigit.length(); i++) {
             for (int j = 0; j < 10; j++) {
-                if (check.contains(Character.getNumericValue(strDigit.charAt(i))) == false)
+                if (!check.contains(Character.getNumericValue(strDigit.charAt(i))))
                     throw new IllegalArgumentException();
 
             }
@@ -79,15 +79,10 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 //Сложение массивов
         for (int i = IntArray.size() - 1; i >= 0; i--) {
             int sum = 0;
-            if (ost == 0) {
-                sum = IntArray.get(i) + str2.IntArray.get(i);
-                ost = sum / 10;
-                sum = sum % 10;
-            } else {
-                sum = IntArray.get(i) + str2.IntArray.get(i) + ost;
-                ost = sum / 10;
-                sum = sum % 10;
-            }
+            sum = IntArray.get(i) + str2.IntArray.get(i) + ost;
+            ost = sum / 10;
+            sum = sum % 10;
+
             Rezult.add(0, sum);
 
         }
@@ -218,7 +213,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             return new EDLargeInteger("1");
         EDLargeInteger boriginal = new EDLargeInteger(str2.Sdigit);
         Rezult.add(0, 0);
-        while ((boriginal.equals(b) != true) || (a.subtraction(b) != null)) {
+        while ((!boriginal.equals(b)) || (a.subtraction(b) != null)) {
             if (a.subtraction(b) != null) {
                 a = a.subtraction(b);
                 Rezult.set(Rezult.size() - 1, Rezult.get(Rezult.size() - 1) + 1);
@@ -237,8 +232,8 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             if ((boriginal.equals(b)) && (a.subtraction(b) == null)) {
                 return new EDLargeInteger(Rezult);
             }
-            if (a.equals(nol) == true) {
-                while (ArraytoString(massStr4).equals(str2.Sdigit) != true) {
+            if (a.equals(nol)) {
+                while (!ArraytoString(massStr4).equals(str2.Sdigit)) {
                     Rezult.add(Rezult.size(), 0);
                     massStr4.remove(massStr4.size() - 1);
                 }
@@ -247,7 +242,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
                     massStr4.remove(massStr4.size() - 1);
                     b = new EDLargeInteger(ArraytoString(massStr4));
                     Rezult.add(Rezult.size(), 0);
-                    if ((boriginal.equals(b) == true) && (a.subtraction(b) == null))
+                    if ((boriginal.equals(b)) && (a.subtraction(b) == null))
                         return new EDLargeInteger(Rezult);
                 }
             }
