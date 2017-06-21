@@ -2,8 +2,7 @@ import java.util.*;
 
 public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
-    private String Sdigit = null;
-    private ArrayList<Integer> IntArray;
+    private ArrayList<Integer> IntArray = new ArrayList<>();
 
     public EDLargeInteger(String strDigit) {
         ArrayList<Integer> check = new ArrayList<Integer>(10);
@@ -29,30 +28,25 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             IntArray.add(Character.getNumericValue(strDigit.charAt(i)));
         }
 
-        Sdigit = strDigit;
 
     }
 
     public EDLargeInteger(ArrayList<Integer> intArray) {
-        while (intArray.get(0) == 0) {
 
+        while ((intArray.get(0) == 0) && (!intArray.isEmpty())) {
             intArray.remove(0);
-            if (intArray.isEmpty())
+            if (intArray.isEmpty()) {
+                intArray.add(0);
                 break;
-        }
-        Sdigit = "";
-        for (int i = 0; i < intArray.size(); i++) {
-            Sdigit = Sdigit + intArray.get(i);
+            }
         }
         IntArray = new ArrayList<Integer>(intArray);
 
     }
 
-    public EDLargeInteger() {
 
-        IntArray = new ArrayList<Integer>();
+    public EDLargeInteger() {
         IntArray.add(0);
-        Sdigit = "0";
 
     }
 
@@ -205,13 +199,13 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
 
         }
-        EDLargeInteger a = new EDLargeInteger(ArraytoString(massStr3));
-        EDLargeInteger b = new EDLargeInteger(ArraytoString(massStr4));
+        EDLargeInteger a = new EDLargeInteger(massStr3);
+        EDLargeInteger b = new EDLargeInteger(massStr4);
         if (a.compareTo(b) == -1)
             return new EDLargeInteger("0");
         if (a.compareTo(b) == 0)
             return new EDLargeInteger("1");
-        EDLargeInteger boriginal = new EDLargeInteger(str2.Sdigit);
+        EDLargeInteger boriginal = new EDLargeInteger(str2.IntArray);
         Rezult.add(0, 0);
         while ((!boriginal.equals(b)) || (a.subtraction(b) != null)) {
             if (a.subtraction(b) != null) {
@@ -233,15 +227,17 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
                 return new EDLargeInteger(Rezult);
             }
             if (a.equals(nol)) {
-                while (!ArraytoString(massStr4).equals(str2.Sdigit)) {
+                while (!(massStr4).equals(str2.IntArray)) {
                     Rezult.add(Rezult.size(), 0);
                     massStr4.remove(massStr4.size() - 1);
                 }
             } else {
                 while ((a.subtraction(b) == null)) {
-                    massStr4.remove(massStr4.size() - 1);
-                    b = new EDLargeInteger(ArraytoString(massStr4));
-                    Rezult.add(Rezult.size(), 0);
+                    if (massStr4.size() > boriginal.IntArray.size()) {
+                        massStr4.remove(massStr4.size() - 1);
+                        Rezult.add(Rezult.size(), 0);
+                    }
+                    b = new EDLargeInteger(massStr4);
                     if ((boriginal.equals(b)) && (a.subtraction(b) == null))
                         return new EDLargeInteger(Rezult);
                 }
@@ -255,7 +251,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public EDLargeInteger mod(EDLargeInteger divisor) {
-        EDLargeInteger delimoe = new EDLargeInteger(Sdigit);
+        EDLargeInteger delimoe = new EDLargeInteger(IntArray);
         EDLargeInteger chastnoe = new EDLargeInteger(delimoe.div(divisor).toString());
         return delimoe.subtraction(chastnoe.multiply(divisor));
     }
@@ -292,7 +288,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     public boolean equals(Object another) {
         if (another instanceof EDLargeInteger) {
             EDLargeInteger anotherED = (EDLargeInteger) another;
-            return this.Sdigit.equals(anotherED.toString());
+            return this.toString().equals(anotherED.toString());
         }
         return false;
 
@@ -314,7 +310,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //ВОЗВРАТ МЕНЬШЕГО
     public EDLargeInteger min(EDLargeInteger str2) {
-        EDLargeInteger str = new EDLargeInteger(Sdigit);
+        EDLargeInteger str = new EDLargeInteger(IntArray);
         if (str.compareTo(str2) == 1)
             return delzero(str2);
         else {
@@ -327,31 +323,21 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     @Override
     public int hashCode() {
 
-        return Sdigit.hashCode() + IntArray.hashCode();
+        return IntArray.hashCode();
 
     }
 
 
     private void delete(int number) {
-        StringBuilder str = new StringBuilder(Sdigit);
-        Sdigit = str.deleteCharAt(number).toString();
         IntArray.remove(number);
-
     }
 
 
     public String toString() {
-        return Sdigit;
-    }
-
-
-    static String ArraytoString(ArrayList<Integer> massInt) {
-        String string = "";
-        for (int i = 0; i < massInt.size(); i++) {
-            string += massInt.get(i);
-        }
-        return string;
-
+        String str = "";
+        for (int i = 0; i < IntArray.size(); i++)
+            str += IntArray.get(i);
+        return str;
     }
 
 
@@ -362,6 +348,14 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         }
         ed = new EDLargeInteger(strBuilder.toString());
         return ed;
+    }
+
+    public static void main(String[] args) {
+        EDLargeInteger ed = new EDLargeInteger("100");
+        EDLargeInteger ed2 = new EDLargeInteger("100");
+        System.out.println(ed.toString());
+        System.out.println(ed2.toString());
+        System.out.println(ed.equals(ed2));
     }
 
 
