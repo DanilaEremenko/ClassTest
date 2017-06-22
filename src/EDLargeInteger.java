@@ -1,35 +1,37 @@
 import java.util.*;
 
+//1  (+)ПРОВЕРКА ПРАВИЛЬНОСТИ ПЕРЕДЕЛАНА
+//2  (+)ПЕРЕДЕЛАНА ОБРЕЗКА НЕЗНАЧАЩИХ НУЛЕЙ В НАЧАЛЕ
+//3  (+)3 ПУНКТ КАЖЕТСЯ НЕ АКТУАЛЕН,Т.К. ОСТАЛОСЬ ТОЛЬКО ПОЛЕ ArrayList
+//4  (+)БУДЕТ ЧИСЛО РАВНОЕ НУЛЮ
+//5  (-)В СЛОЖЕНИИ И ВЫЧИТАНИИ ИСПОЛЬЗОВАНЫ КОПИИ,ПЕРЕДЕЛАТЬ,ЧТОБЫ НЕ БЫЛО
+//6  (+)ненужный if убран
+//7  (-)Разве у ArrayLis есть метод reverse?
 public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     private ArrayList<Integer> IntArray = new ArrayList<>();
 
+
     public EDLargeInteger(String strDigit) {
-        ArrayList<Integer> check = new ArrayList<Integer>(10);
-        for (int i = 0; i < 10; i++)
-            check.add(i);
+
+        int zero = 0;
+        for (int i = 0; i < strDigit.length(); i++) {
+            if (strDigit.charAt(i) == '0') {
+                zero++;
+                i++;
+            } else break;
+        }
+        strDigit.substring(0,zero);
 
         for (int i = 0; i < strDigit.length(); i++) {
-            for (int j = 0; j < 10; j++) {
-                if (!check.contains(Character.getNumericValue(strDigit.charAt(i))))
-                    throw new IllegalArgumentException();
-
-            }
-        }
-
-
-        while (strDigit.charAt(0) == '0') {
-            strDigit = new StringBuilder(strDigit).deleteCharAt(0).toString();
-        }
-
-
-        IntArray = new ArrayList<Integer>();
-        for (int i = 0; i < strDigit.length(); i++) {
-            IntArray.add(Character.getNumericValue(strDigit.charAt(i)));
+            if (Character.isDigit(strDigit.charAt(i)))
+                IntArray.add(Character.getNumericValue(strDigit.charAt(i)));
+            else throw new IllegalArgumentException();
         }
 
 
     }
+
 
     public EDLargeInteger(ArrayList<Integer> intArray) {
 
@@ -53,27 +55,15 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //СЛОЖЕНИЕ
     public EDLargeInteger summa(EDLargeInteger str2) {
-
+        ArrayList<Integer>str=IntArray;
         ArrayList<Integer> Rezult = new ArrayList<Integer>();
 
-        //Подведение чисел под общий знаменатель
-        if (IntArray.size() != str2.IntArray.size()) {
-
-            while (IntArray.size() > str2.IntArray.size()) {
-                str2.IntArray.add(0, 0);
-            }
-
-            while (str2.IntArray.size() > IntArray.size()) {
-                IntArray.add(0, 0);
-            }
-
-        }
 
         int ost = 0;
 //Сложение массивов
-        for (int i = IntArray.size() - 1; i >= 0; i--) {
+        for (int i = str.size() - 1; i >= 0; i--) {
             int sum = 0;
-            sum = IntArray.get(i) + str2.IntArray.get(i) + ost;
+            sum = str.get(i) + str2.IntArray.get(i) + ost;
             ost = sum / 10;
             sum = sum % 10;
 
@@ -93,38 +83,38 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     //ВЫЧИТАНИЕ
     public EDLargeInteger subtraction(EDLargeInteger str2) {
         ArrayList<Integer> Rezult = new ArrayList<Integer>();
-
+        ArrayList<Integer> str = this.IntArray;
 
         //Подведение чисел под общий знаменатель
-        if (IntArray.size() != str2.IntArray.size()) {
+        if (str.size() != str2.IntArray.size()) {
 
-            while (IntArray.size() > str2.IntArray.size()) {
+            while (str.size() > str2.IntArray.size()) {
                 str2.IntArray.add(0, 0);
             }
 
-            while (str2.IntArray.size() > IntArray.size()) {
-                IntArray.add(0, 0);
+            while (str2.IntArray.size() > str.size()) {
+                str.add(0, 0);
             }
 
         }
 
-        for (int i = 0; i < IntArray.size(); i++) {
-            if (IntArray.get(i) > str2.IntArray.get(i)) {
+        for (int i = 0; i < str.size(); i++) {
+            if (str.get(i) > str2.IntArray.get(i)) {
                 break;
             }
-            if (IntArray.get(i) < str2.IntArray.get(i)) {
+            if (str.get(i) < str2.IntArray.get(i)) {
                 return null;
             }
         }
 
         int debt = 0;
-        for (int i = IntArray.size() - 1; i >= 0; i--) {
+        for (int i = str.size() - 1; i >= 0; i--) {
             int sum = 0;
-            if (IntArray.get(i) < str2.IntArray.get(i)) {
-                sum = IntArray.get(i) + 10 - str2.IntArray.get(i) - debt;
+            if (str.get(i) < str2.IntArray.get(i)) {
+                sum = str.get(i) + 10 - str2.IntArray.get(i) - debt;
                 debt = 1;
             } else {
-                sum = IntArray.get(i) - str2.IntArray.get(i) - debt;
+                sum = str.get(i) - str2.IntArray.get(i) - debt;
                 debt = 0;
             }
             Rezult.add(0, sum);
@@ -349,14 +339,5 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         ed = new EDLargeInteger(strBuilder.toString());
         return ed;
     }
-
-    public static void main(String[] args) {
-        EDLargeInteger ed = new EDLargeInteger("100");
-        EDLargeInteger ed2 = new EDLargeInteger("100");
-        System.out.println(ed.toString());
-        System.out.println(ed2.toString());
-        System.out.println(ed.equals(ed2));
-    }
-
 
 }

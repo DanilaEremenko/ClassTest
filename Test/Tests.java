@@ -16,7 +16,7 @@ public class Tests {
         BigInteger BI =new BigInteger(edLI.toString());
         BigInteger BI2=new BigInteger(edLI2.toString());
         assertEquals(BI.add(BI2).toString(), edLI.summa(edLI2).toString());
-        assertEquals(new EDLargeInteger("100"),new EDLargeInteger("99").summa(new EDLargeInteger("1")));
+        assertEquals(new EDLargeInteger("100"),new EDLargeInteger("0099").summa(new EDLargeInteger("1")));
     }
 
     @Test
