@@ -1,13 +1,11 @@
-import java.math.BigInteger;
 import java.util.*;
 
-//1  (+)ПРОВЕРКА ПРАВИЛЬНОСТИ ПЕРЕДЕЛАНА
-//2  (+)ПЕРЕДЕЛАНА ОБРЕЗКА НЕЗНАЧАЩИХ НУЛЕЙ В НАЧАЛЕ
-//3  (+)3 ПУНКТ КАЖЕТСЯ НЕ АКТУАЛЕН,Т.К. ОСТАЛОСЬ ТОЛЬКО ПОЛЕ ArrayList
-//4  (+)БУДЕТ ЧИСЛО РАВНОЕ НУЛЮ
-//5  (+)В СЛОЖЕНИИ И ВЫЧИТАНИИ УБРАН ПОДГОН ПОД ОДНУ ДЛИНУ
-//6  (+)ненужный if убран
-//7  (+)Исправлена вставка в начало
+/*
+1)(+)Для переворота используется Collections.reverse()
+2)(+)Конструктор из ArrayList копирует не ссылку,а содержимое
+3)(+)Пункт исправлен
+4)(+)Ненужный метод delzero убран
+*/
 public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     private ArrayList<Integer> IntArray = new ArrayList<>();
@@ -35,8 +33,14 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     }
 
 
-    public EDLargeInteger(ArrayList<Integer> intArray) {
-        IntArray = intArray;
+    private EDLargeInteger(ArrayList<Integer> intArray) {
+        while (intArray.get(0) == 0 && intArray.size() > 1)
+            intArray.remove(0);
+
+
+        for (Integer digit : intArray) {
+            IntArray.add(digit);
+        }
     }
 
 
@@ -73,8 +77,9 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
             Rezult.add(ost);
         }
 
-        return new EDLargeInteger(new StringBuilder(new EDLargeInteger(Rezult).toString()).reverse().toString());
+        Collections.reverse(Rezult);
 
+        return new EDLargeInteger(Rezult);
 
     }
 
@@ -109,7 +114,11 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
         }
 
-        return new EDLargeInteger(new StringBuilder(new EDLargeInteger(Rezult).toString()).reverse().toString());
+        Collections.reverse(Rezult);
+
+        return new EDLargeInteger(Rezult);
+
+
     }
 
 
@@ -153,7 +162,8 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
         EDLargeInteger Rezult = new EDLargeInteger();
         for (int i = 0; i < str2.IntArray.size(); i++) {
-            Rezult = Rezult.summa(new EDLargeInteger(new StringBuilder(new EDLargeInteger(massSlog[i]).toString()).reverse().toString()));
+            Collections.reverse(massSlog[i]);
+            Rezult = Rezult.summa(new EDLargeInteger(massSlog[i]));
         }
 
         return Rezult;
@@ -229,9 +239,8 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public EDLargeInteger mod(EDLargeInteger divisor) {
-        EDLargeInteger delimoe = new EDLargeInteger(IntArray);
-        EDLargeInteger chastnoe = new EDLargeInteger(delimoe.div(divisor).toString());
-        return delimoe.subtraction(chastnoe.multiply(divisor));
+        EDLargeInteger chastnoe = new EDLargeInteger(this.div(divisor).toString());
+        return this.subtraction(chastnoe.multiply(divisor));
     }
 
 
@@ -277,9 +286,9 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     // ВОЗВРАТ БОЛЬШЕГО
     public EDLargeInteger max(EDLargeInteger str2) {
         if (compareTo(str2) == 1)
-            return delzero(this);
+            return this;
         else {
-            return delzero(str2);
+            return str2;
         }
 
 
@@ -289,9 +298,9 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
     //ВОЗВРАТ МЕНЬШЕГО
     public EDLargeInteger min(EDLargeInteger str2) {
         if (this.compareTo(str2) == 1)
-            return delzero(str2);
+            return str2;
         else {
-            return delzero(this);
+            return this;
         }
 
     }
@@ -315,16 +324,6 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         for (int i = 0; i < IntArray.size(); i++)
             str += IntArray.get(i);
         return str;
-    }
-
-
-    private EDLargeInteger delzero(EDLargeInteger ed) {
-        StringBuilder strBuilder = new StringBuilder(ed.toString());
-        while ((strBuilder.charAt(0) == '0') && (strBuilder.length() > 1)) {
-            strBuilder.deleteCharAt(0);
-        }
-        ed = new EDLargeInteger(strBuilder.toString());
-        return ed;
     }
 
 
