@@ -37,10 +37,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
         while (intArray.get(0) == 0 && intArray.size() > 1)
             intArray.remove(0);
 
-
-        for (Integer digit : intArray) {
-            IntArray.add(digit);
-        }
+        IntArray.addAll(intArray);
     }
 
 
@@ -239,8 +236,7 @@ public class EDLargeInteger implements Comparable<EDLargeInteger> {
 
     //ОСТАТОК ОТ ДЕЛЕНИЯ
     public EDLargeInteger mod(EDLargeInteger divisor) {
-        EDLargeInteger chastnoe = new EDLargeInteger(this.div(divisor).toString());
-        return this.subtraction(chastnoe.multiply(divisor));
+        return this.subtraction(this.div(divisor).multiply(divisor));
     }
 
 
